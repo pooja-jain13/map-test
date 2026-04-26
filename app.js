@@ -173,6 +173,9 @@ function openModal(videos) {
   const closeBtn = document.querySelector('.close');
   const hint = document.getElementById('swipeHint');
 
+  // Close any open popups so the iframe doesn't conflict
+  document.querySelectorAll('.mapboxgl-popup').forEach(p => p.remove());
+
   modal.style.display = 'flex';
   closeBtn.style.display = 'block';
 
