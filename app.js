@@ -2,7 +2,7 @@
 // 1. Initialize Supabase
 const _supabase = supabase.createClient(
   'https://djdgwtifvecgppsibsfi.supabase.co', 
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' // <--- Paste your full long Anon Key here
+  'sb_publishable_aXvt1g4t--Y1plA_Q7aPEw_UaMj6vPY'
 );
 
 
@@ -155,7 +155,6 @@ map.on('load', async () => {
       .addTo(map);
   });
 
-});
 
 /* =========================
    MODAL + ONE VIDEO AT A TIME
