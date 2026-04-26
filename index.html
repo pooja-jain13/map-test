@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>NYC Restaurant Map</title>
+
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<!-- Mapbox -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- FILTER BUTTONS -->
+<div class="filter-container">
+  <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+  <button class="filter-btn" onclick="setFilter('Mexican', this)">Mexican</button>
+  <button class="filter-btn" onclick="setFilter('Italian', this)">Italian</button>
+  <button class="filter-btn" onclick="setFilter('Middle Eastern', this)">Middle Eastern</button>
+  <button class="filter-btn" onclick="setFilter('Caribbean', this)">Caribbean</button>
+  <button class="filter-btn" onclick="setFilter('Burgers', this)">Burgers</button>
+  <button class="filter-btn" onclick="setFilter('Belgian', this)">Belgian</button>
+  <button class="filter-btn" onclick="setFilter('Japanese/Sushi', this)">Japanese/Sushi</button>
+  <button class="filter-btn" onclick="setFilter('Eastern European', this)">Eastern European</button>
+  <button class="filter-btn" onclick="setFilter('Colombian', this)">Colombian</button>
+  <button class="filter-btn" onclick="setFilter('Chinese', this)">Chinese</button>
+  <button class="filter-btn" onclick="setFilter('American (Traditional)', this)">American (Traditional)</button>
+  <button class="filter-btn" onclick="setFilter('Vietnamese', this)">Vietnamese</button>
+  <button class="filter-btn" onclick="setFilter('Southern', this)">Southern</button>
+  <button class="filter-btn" onclick="setFilter('Australian', this)">Australian</button>
+
+</div>
+
+<!-- MAP -->
+<div id="map"></div>
+
+<!-- ✅ MODAL (THIS WAS YOUR BUG BEFORE) -->
+<div id="videoModal" class="modal">
+  <span class="close" onclick="closeModal()">×</span>
+  <div id="carouselWrapper">
+    <div id="swipeHint">← Swipe →</div>
+    <div id="carousel"></div>
+  </div>
+</div>
+
+<!-- ✅ JS LOADS LAST -->
+<script src="app.js"></script>
+
+</body>
+</html>
