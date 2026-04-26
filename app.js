@@ -1023,50 +1023,85 @@ const restaurantData = {
 /* =========================
    MAP LOAD
 ========================= */
-map.on('load', () => {
+map.on('load', async () => {
+    // 1. Fetch from Supabase
+    const { data: restaurants, error } = await _supabase
+        .from('restaurants')
+        .select('*');
 
-  map.addSource('restaurants', {
-    type: 'geojson',
-    data: restaurantData
-  });
-
-  map.addLayer({
-    id: 'restaurant-points',
-    type: 'circle',
-    source: 'restaurants',
-    paint: {
-      'circle-radius': [
-        'interpolate',
-        ['linear'],
-       ['get', 'views'],
-        1000, 8,
-        2000000, 60
-],
-      'circle-color': [
-      'match',
-      ['get', 'category'],
-      'Middle Eastern', '#e63946',
-      'Indian', '#0b00a8',
-      'Mexican', '#2a9d8f',
-      'Italian', '#5d6eeb',
-      'Caribbean', '#b83be9',
-      'Delicatessen', '#9fe2c9',
-      'Burgers', '#8b4801',
-      'Belgian', '#c8aeff',
-      'Japanese/Sushi', '#fffd6b',
-      'Eastern European', '#ff5fdc',
-      'Colombian', '#7b1616',
-      'Chinese', '#bfff00',
-      'American (Traditional)', '#ff7700',
-      'Vietnamese', '#650cd9',
-      'Southern', '#1ac030',
-      'Australian', '#02c9d0',
-      '#888'
-      ],
-      'circle-stroke-width': 2,
-      'circle-stroke-color': '#fff'
+    if (error) {
+        console.error('Error:', error);
+        return;
     }
-  });
+
+    // 2. Convert database rows to GeoJSON
+    const geojson = {
+        type: 'FeatureCollection',
+        features: restaurants.map(r => ({
+            type: 'Feature',
+            properties: {
+                title: r.name,
+                views: r.views, 
+                category: r.cuisine, // Ensure this column is named 'cuisine' in Supabase
+                location: r.address,
+                videos: JSON.stringify([
+                    { url: r.video_url_1 },
+                    { url: r.video_url_2 },
+                    { url: r.video_url_3 }
+                ].filter(v => v.url)) 
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [r.longitude, r.latitude]
+            }
+        }))
+    };
+
+    // 3. Add source
+    map.addSource('restaurants', {
+        type: 'geojson',
+        data: geojson
+    });
+
+    // 4. Add layer (Updated to lowercase to match your new data)
+    map.addLayer({
+        id: 'restaurant-points',
+        type: 'circle',
+        source: 'restaurants',
+        paint: {
+            'circle-radius': [
+                'interpolate',
+                ['linear'],
+                ['get', 'views'],
+                1000, 8,
+                2000000, 60
+            ],
+            'circle-color': [
+                'match',
+                ['get', 'category'],
+                'middle eastern', '#e63946',
+                'indian', '#0b00a8',
+                'mexican', '#2a9d8f',
+                'italian', '#5d6eeb',
+                'caribbean', '#b83be9',
+                'delicatessen', '#9fe2c9',
+                'burgers', '#8b4801',
+                'belgian', '#c8aeff',
+                'japanese/sushi', '#fffd6b',
+                'eastern european', '#ff5fdc',
+                'colombian', '#7b1616',
+                'chinese', '#bfff00',
+                'american (traditional)', '#ff7700',
+                'vietnamese', '#650cd9',
+                'southern', '#1ac030',
+                'australian', '#02c9d0',
+                '#888'
+            ],
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#fff'
+        }
+    });
+});
 
   /* =========================
      POPUP
