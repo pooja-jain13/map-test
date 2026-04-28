@@ -446,7 +446,7 @@ body {
 
 .back-intro-btn {
   position: fixed;
-  top: 70px;
+  top: 70px; /* below dark mode */
   right: 20px;
   z-index: 9999;
 
@@ -457,5 +457,10 @@ body {
   border-radius: 100px;
   font-weight: 700;
   cursor: pointer;
+
   box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.back-intro-btn {
+  display: none;
 }
