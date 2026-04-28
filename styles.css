@@ -1,107 +1,135 @@
+/* =========================
+   GLOBAL
+========================= */
+html,
 body {
-margin: 0;
-padding: 0;
-font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
+/* =========================
+   MAP
+========================= */
 #map {
-position: absolute;
-top: 0;
-bottom: 0;
-width: 100%;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
 }
 
-/* FILTERS */
-/* FILTER PANEL */
+/* =========================
+   FILTER PANEL
+========================= */
 .filter-panel {
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 20px;
   z-index: 10;
 
-  width: 260px;
-  max-height: 90vh;
+  width: 300px;
+  max-height: 88vh;
   overflow-y: auto;
 
   background: white;
-  padding: 18px;
-  border-radius: 14px;
-
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
 }
 
-/* Title */
 .filter-panel h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 28px;
+  font-weight: 800;
 }
 
 .filter-panel p {
-  margin: 4px 0 14px;
-  font-size: 13px;
-  color: #555;
+  margin: 6px 0 22px;
+  font-size: 18px;
 }
 
-/* Labels */
 .filter-panel label {
   display: block;
-  margin-top: 12px;
-  margin-bottom: 5px;
-  font-weight: bold;
-  font-size: 13px;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 17px;
 }
 
-/* Inputs */
-.filter-panel select,
+.filter-panel select {
+  width: 100%;
+  padding: 13px;
+  border-radius: 9px;
+  border: 1px solid #bbb;
+  font-size: 16px;
+  background: white;
+}
+
 .filter-panel button {
   width: 100%;
-  padding: 9px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-/* Button */
-.filter-panel button {
-  margin-top: 14px;
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 9px;
+  border: none;
   background: #0b00a8;
   color: white;
-  border: none;
   cursor: pointer;
-  font-weight: bold;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .filter-panel button:hover {
   background: #1a0dab;
 }
 
-/* COUNT */
+/* =========================
+   RESTAURANT COUNT
+========================= */
 .restaurant-count {
-  margin-top: 12px;
-  font-size: 13px;
-  color: #333;
+  margin-top: 14px;
+  font-size: 16px;
+  color: #222;
 }
 
-/* LEGEND */
+.restaurant-count span {
+  color: #0b00a8;
+  font-weight: 800;
+}
+
+/* =========================
+   LEGEND
+========================= */
 .legend {
-  margin-top: 16px;
-  font-size: 13px;
+  margin-top: 22px;
 }
 
 .legend h3 {
+  margin: 0 0 12px;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 15px;
 }
 
-/* DOTS */
 .dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  margin-right: 6px;
+  display: inline-block;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.15);
 }
 
-/* COLORS (MATCH YOUR MAP EXACTLY) */
 .dot.mexican { background: #2a9d8f; }
 .dot.italian { background: #5d6eeb; }
 .dot.middle-eastern { background: #e63946; }
@@ -113,54 +141,49 @@ width: 100%;
 .dot.vietnamese { background: #650cd9; }
 .dot.southern { background: #1ac030; }
 .dot.australian { background: #02c9d0; }
+.dot.belgian { background: #c8aeff; }
+.dot.eastern-european { background: #ff5fdc; }
+.dot.colombian { background: #7b1616; }
 
-/* POPUP */
+/* =========================
+   MAPBOX POPUP
+========================= */
 .mapboxgl-popup-content {
-border-radius: 12px;
-padding: 12px;
-max-width: 320px;
+  border-radius: 12px;
+  padding: 14px;
+  max-width: 320px;
 }
 
 .popup-title {
-font-weight: bold;
-font-size: 16px;
-margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
 }
 
 .popup-location {
-font-size: 12px;
-color: gray;
-margin-bottom: 10px;
+  font-size: 12px;
+  color: gray;
+  margin-bottom: 10px;
 }
-
 
 .more-btn {
-  display: block;       /* This makes the button a 'block' that can be centered */
-  margin: 15px auto 0;  /* 'auto' on the sides pushes it to the dead center */
-  
-  /* Your existing styling */
-  background: #0b00a8;
-  color: white;
+  margin-top: 10px;
+  padding: 9px 12px;
   border: none;
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-weight: 600;
+  background: black;
+  color: white;
+  border-radius: 7px;
   cursor: pointer;
+  width: 100%;
+  font-weight: 700;
 }
 
-
-/* TikTok cards */
-.tiktok-card {
-margin-bottom: 10px;
-}
-
-.tiktok-meta {
-font-size: 12px;
-margin-top: 4px;
+.more-btn:hover {
+  background: #333;
 }
 
 /* =========================
-   MODAL (VIDEO VIEW)
+   VIDEO MODAL
 ========================= */
 #videoModal {
   display: none;
@@ -173,92 +196,55 @@ margin-top: 4px;
   align-items: center;
 }
 
-/* Close button */
 .close {
   position: absolute;
   top: 20px;
   right: 25px;
-  font-size: 32px;
+  font-size: 34px;
   color: white;
   cursor: pointer;
   z-index: 1000;
-
-  display: none; /* hide by default */
+  display: none;
 }
 
-/* =========================
-   CAROUSEL FIX (IMPORTANT)
-========================= */
-
-/* Outer wrapper (controls width + scroll) */
 #carouselWrapper {
   width: 340px;
   max-width: 90vw;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Inner track */
+#carouselWrapper::-webkit-scrollbar {
+  display: none;
+}
+
 #carousel {
   display: flex;
   gap: 16px;
   padding: 10px;
 }
 
-/* Each slide */
 .carousel-video {
   flex: 0 0 100%;
   scroll-snap-align: center;
   text-align: center;
+  color: white;
 }
 
-/* TikTok iframe styling */
 .carousel-video iframe {
   width: 100%;
   height: 500px;
   border-radius: 12px;
+  background: black;
 }
 
-/* Caption under video */
 .carousel-video div {
   margin-top: 8px;
   font-size: 14px;
-}
-
-/* =========================
-   SCROLLBAR (optional clean look)
-========================= */
-#carouselWrapper::-webkit-scrollbar {
-  display: none;
-}
-
-#carouselWrapper {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-#carouselWrapper {
-  scroll-behavior: smooth;
-}
-
-#swipeHint {
-  position: absolute;
-  bottom: 30px;
-  color: white;
-  font-size: 14px;
-  opacity: 0.8;
-  text-align: center;
-  width: 100%;
-  pointer-events: none;
-
-  animation: fadeHint 8s infinite;
-}
-
-@keyframes fadeHint {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
 }
 
 .open-tiktok {
@@ -268,90 +254,109 @@ margin-top: 4px;
   font-size: 13px;
 }
 
+.nav-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
 
+.nav-buttons button {
+  border: none;
+  background: white;
+  color: black;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-/* FAB Button */
+/* Swipe hint */
+#swipeHint {
+  position: absolute;
+  bottom: 30px;
+  color: white;
+  font-size: 14px;
+  opacity: 0.85;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+  animation: fadeHint 2s infinite;
+}
+
+@keyframes fadeHint {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+/* =========================
+   ADD RESTAURANT BUTTON
+========================= */
 .fab {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    
-    /* The Pill Shape */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px; /* Space between + icon and text */
-    padding: 0 30px;
-    height: 52px;
-    width: auto; /* Allows it to be a pill, not a circle */
-    border-radius: 100px; /* Max radius for perfectly round ends */
-    
-    /* Branding & Style */
-    background: #0b00a8;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-family: 'Inter', -apple-system, sans-serif; /* Use a clean UI font */
-    font-size: 15px;
-    font-weight: 600;
-    
-    /* Shadow & Depth */
-    box-shadow: 0 8px 24px rgba(11, 0, 168, 0.3);
-    z-index: 1000;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: auto;
+  height: 52px;
+  padding: 0 30px;
+  border-radius: 100px;
+
+  background: #0b00a8;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(11, 0, 168, 0.3);
+  transition: 0.25s ease;
 }
 
 .fab:hover {
-    transform: scale(1.1);
-    background: #1a0dab;
+  transform: scale(1.07);
+  background: #1a0dab;
 }
 
 .fab svg {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
-/* restaurant-count */
-.restaurant-count {
-  margin-top: 12px;
-  font-size: 13px;
-  color: #333;
-}
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 600px) {
+  .filter-panel {
+    width: calc(100vw - 60px);
+    max-height: 60vh;
+    top: 15px;
+    left: 15px;
+    padding: 18px;
+  }
 
-.restaurant-count span {
-  color: #0b00a8;
-  font-weight: bold;
-}
+  .filter-panel h2 {
+    font-size: 24px;
+  }
 
-.legend {
-  margin-top: 16px;
-  font-size: 12px;
-}
+  .filter-panel p {
+    font-size: 15px;
+  }
 
-.legend h3 {
-  margin: 0 0 8px;
-  font-size: 13px;
-}
+  .fab {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+  }
 
-.legend div {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 6px;
+  .carousel-video iframe {
+    height: 460px;
+  }
 }
-
-.dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.dot.mexican { background: #2a9d8f; }
-.dot.italian { background: #5d6eeb; }
-.dot.middle-eastern { background: #e63946; }
-.dot.caribbean { background: #b83be9; }
-.dot.burgers { background: #8b4801; }
-.dot.indian { background: #0b00a8; }
-.dot.chinese { background: #bfff00; }
-.dot.american { background: #ff7700; }
-.dot.vietnamese { background: #650cd9; }
