@@ -135,19 +135,18 @@ margin-bottom: 10px;
 
 
 .more-btn {
-  display: block;             /* Makes the button a block element that can be centered */
-  margin: 15px auto 0;        /* Centers the button horizontally (15px top, 'auto' sides) */
-  padding: 10px 20px;         /* Increased vertical padding to make it look taller/more rectangular */
-  border-radius: 4px;         /* Reduced the border-radius for a more squared/rectangular look */
+  display: block;       /* This makes the button a 'block' that can be centered */
+  margin: 15px auto 0;  /* 'auto' on the sides pushes it to the dead center */
   
   /* Your existing styling */
   background: #0b00a8;
   color: white;
   border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
 }
-
 
 
 /* TikTok cards */
@@ -356,35 +355,3 @@ margin-top: 4px;
 .dot.chinese { background: #bfff00; }
 .dot.american { background: #ff7700; }
 .dot.vietnamese { background: #650cd9; }
-
-/* =========================
-   LEGEND (COLOR DOTS)
-========================= */
-
-.legend-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 7px;
-  font-size: 14px;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: inline-block;
-}
-
-.dot.mexican { background: #2a9d8f; }
-.dot.italian { background: #5d6eeb; }
-.dot.middle-eastern { background: #e63946; }
-.dot.caribbean { background: #b83be9; }
-.dot.burgers { background: #8b4801; }
-.dot.indian { background: #0b00a8; }
-.dot.chinese { background: #bfff00; }
-.dot.american { background: #ff7700; }
-.dot.vietnamese { background: #650cd9; }
-.dot.southern { background: #1ac030; }
-.dot.australian { background: #02c9d0; }
