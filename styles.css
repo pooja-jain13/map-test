@@ -12,30 +12,51 @@ width: 100%;
 }
 
 /* FILTERS */
-.filter-container {
-position: absolute;
-top: 10px;
-left: 10px;
-z-index: 1;
-background: white;
-padding: 10px;
-border-radius: 10px;
-display: flex;
-gap: 6px;
-flex-wrap: wrap;
+.filter-panel {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  width: 260px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
-.filter-btn {
-border: none;
-padding: 6px 10px;
-border-radius: 6px;
-cursor: pointer;
-background: #eee;
+.filter-panel h2 {
+  margin: 0;
+  font-size: 20px;
 }
 
-.filter-btn.active {
-background: #333;
-color: white;
+.filter-panel p {
+  margin: 4px 0 14px;
+  font-size: 13px;
+}
+
+.filter-panel label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.filter-panel select,
+.filter-panel button {
+  width: 100%;
+  padding: 9px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.filter-panel button {
+  margin-top: 14px;
+  background: #0b00a8;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 /* POPUP */

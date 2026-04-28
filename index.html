@@ -16,23 +16,39 @@
 <body>
 
 <!-- FILTER BUTTONS -->
-<div class="filter-container">
-  <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-  <button class="filter-btn" onclick="setFilter('mexican', this)">Mexican</button>
-  <button class="filter-btn" onclick="setFilter('italian', this)">Italian</button>
-  <button class="filter-btn" onclick="setFilter('middle eastern', this)">Middle Eastern</button>
-  <button class="filter-btn" onclick="setFilter('caribbean', this)">Caribbean</button>
-  <button class="filter-btn" onclick="setFilter('burgers', this)">Burgers</button>
-  <button class="filter-btn" onclick="setFilter('belgian', this)">Belgian</button>
-  <button class="filter-btn" onclick="setFilter('japanese/sushi', this)">Japanese/Sushi</button>
-  <button class="filter-btn" onclick="setFilter('eastern european', this)">Eastern European</button>
-  <button class="filter-btn" onclick="setFilter('colombian', this)">Colombian</button>
-  <button class="filter-btn" onclick="setFilter('chinese', this)">Chinese</button>
-  <button class="filter-btn" onclick="setFilter('american (traditional)', this)">American (Traditional)</button>
-  <button class="filter-btn" onclick="setFilter('vietnamese', this)">Vietnamese</button>
-  <button class="filter-btn" onclick="setFilter('southern', this)">Southern</button>
-  <button class="filter-btn" onclick="setFilter('australian', this)">Australian</button>
+<div class="filter-panel">
+  <h2>ViralEats NYC</h2>
+  <p>NYC Restaurant Week 2026</p>
 
+  <label>Filter by Cuisine:</label>
+  <select id="cuisineFilter" onchange="applyFilters()">
+    <option value="all">All Cuisines</option>
+    <option value="mexican">Mexican</option>
+    <option value="italian">Italian</option>
+    <option value="middle eastern">Middle Eastern</option>
+    <option value="caribbean">Caribbean</option>
+    <option value="burgers">Burgers</option>
+    <option value="belgian">Belgian</option>
+    <option value="japanese/sushi">Japanese/Sushi</option>
+    <option value="eastern european">Eastern European</option>
+    <option value="colombian">Colombian</option>
+    <option value="chinese">Chinese</option>
+    <option value="american (traditional)">American (Traditional)</option>
+    <option value="vietnamese">Vietnamese</option>
+    <option value="southern">Southern</option>
+    <option value="australian">Australian</option>
+  </select>
+
+  <label>Filter by Viral Level:</label>
+  <select id="viewsFilter" onchange="applyFilters()">
+    <option value="all">All Popularity</option>
+    <option value="low">Under 50k views</option>
+    <option value="trending">50k–250k views</option>
+    <option value="viral">250k–1M views</option>
+    <option value="super">1M+ views</option>
+  </select>
+
+  <button onclick="resetFilters()">Reset Filters</button>
 </div>
 
 <!-- MAP -->

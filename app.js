@@ -257,19 +257,39 @@ window.onclick = function(e) {
 /* =========================
    FILTER UI ONLY
 ========================= */
-function setFilter(category, btn) {
+function applyFilters() {
+  const cuisine = document.getElementById('cuisineFilter').value;
+  const views = document.getElementById('viewsFilter').value;
 
-  if (category === 'all') {
-    map.setFilter('restaurant-points', null);
-  } else {
-    map.setFilter('restaurant-points', ['==', ['get', 'category'], category]);
+  let filters = ['all'];
+
+  if (cuisine !== 'all') {
+    filters.push(['==', ['get', 'category'], cuisine]);
   }
 
-  // UI highlight
-  document.querySelectorAll('.filter-btn')
-    .forEach(b => b.classList.remove('active'));
+  if (views === 'low') {
+    filters.push(['<', ['get', 'views'], 50000]);
+  } else if (views === 'trending') {
+    filters.push(['all',
+      ['>=', ['get', 'views'], 50000],
+      ['<', ['get', 'views'], 250000]
+    ]);
+  } else if (views === 'viral') {
+    filters.push(['all',
+      ['>=', ['get', 'views'], 250000],
+      ['<', ['get', 'views'], 1000000]
+    ]);
+  } else if (views === 'super') {
+    filters.push(['>=', ['get', 'views'], 1000000]);
+  }
 
-  btn.classList.add('active');
+  map.setFilter('restaurant-points', filters);
+}
+
+function resetFilters() {
+  document.getElementById('cuisineFilter').value = 'all';
+  document.getElementById('viewsFilter').value = 'all';
+  map.setFilter('restaurant-points', null);
 }
 
 
