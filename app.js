@@ -194,16 +194,6 @@ map.on('click', 'restaurant-points', (e) => {
         </div>
       ` : ''}
 
-      ${firstVideoID ? `
-        <iframe
-          src="https://www.tiktok.com/embed/${firstVideoID}"
-          width="100%"
-          height="220"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
-      ` : ''}
-
       <button class="more-btn">More Videos →</button>
     </div>
   `;
