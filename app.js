@@ -54,7 +54,7 @@ map.on('load', async () => {
                 views: r.views, 
                 category: r.cuisine, // Ensure this column is named 'cuisine' in Supabase
                 location: r.address,
-                website: r.website
+                website: r.website,
                 videos: JSON.stringify([
                     { url: r.video_url_1 },
                     { url: r.video_url_2 },
