@@ -148,14 +148,13 @@ map.on('click', 'restaurant-points', (e) => {
         ` : ''}
         
         <button class="more-btn">More Videos →</button>
-    `;
+    </div>
+  `;
 
-    const btn = popupNode.querySelector('.more-btn');
-    if (btn) {
-        btn.onclick = () => {
-            openModal(videos);
-        };
-    }
+  popupNode.querySelector('.more-btn').onclick = () => {
+    openModal(videos);
+  };
+
 
     new mapboxgl.Popup({ offset: 10 })
         .setLngLat(coords)
