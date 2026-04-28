@@ -198,7 +198,7 @@ margin-top: 4px;
 }
 
 .fab:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(90deg);
     background: #1a0dab;
 }
 
