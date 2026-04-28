@@ -135,15 +135,15 @@ margin-bottom: 10px;
 
 
 .more-btn {
-  display: block;       /* This makes the button a 'block' that can be centered */
-  margin: 15px auto 0;  /* 'auto' on the sides pushes it to the dead center */
+  display: block;             /* Makes the button a block element that can be centered */
+  margin: 15px auto 0;        /* Centers the button horizontally (15px top, 'auto' sides) */
+  padding: 10px 20px;         /* Increased vertical padding to make it look taller/more rectangular */
+  border-radius: 4px;         /* Reduced the border-radius for a more squared/rectangular look */
   
   /* Your existing styling */
   background: #0b00a8;
   color: white;
   border: none;
-  padding: 8px 18px;
-  border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
 }
