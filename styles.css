@@ -183,16 +183,28 @@ margin-top: 4px;
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 60px;
-    height: 60px;
-    background: #0b00a8; /* Your brand blue */
-    color: white;
-    border-radius: 50%;
+    
+    /* The Pill Shape */
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px; /* Space between + icon and text */
+    padding: 0 24px;
+    height: 52px;
+    width: auto; /* Allows it to be a pill, not a circle */
+    border-radius: 100px; /* Max radius for perfectly round ends */
+    
+    /* Branding & Style */
+    background: #0b00a8;
+    color: white;
+    border: none;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(11, 0, 168, 0.4);
+    font-family: 'Inter', -apple-system, sans-serif; /* Use a clean UI font */
+    font-size: 15px;
+    font-weight: 600;
+    
+    /* Shadow & Depth */
+    box-shadow: 0 8px 24px rgba(11, 0, 168, 0.3);
     z-index: 1000;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -202,3 +214,6 @@ margin-top: 4px;
     background: #1a0dab;
 }
 
+.fab svg {
+    flex-shrink: 0;
+}
