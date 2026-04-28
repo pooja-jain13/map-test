@@ -136,6 +136,74 @@ map.on('load', async () => {
     map.on('zoomend', updateVisibleDotCount);
 });
 
+let isDarkMode = false;
+
+function toggleMapTheme() {
+  const btn = document.getElementById('themeToggle');
+
+  isDarkMode = !isDarkMode;
+
+  if (isDarkMode) {
+    map.setStyle('mapbox://styles/mapbox/dark-v11');
+    btn.textContent = '☀️ Light Mode';
+    btn.classList.add('dark');
+  } else {
+    map.setStyle('mapbox://styles/mapbox/light-v11');
+    btn.textContent = '🌙 Dark Mode';
+    btn.classList.remove('dark');
+  }
+
+  map.once('style.load', () => {
+    map.addSource('restaurants', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: allRestaurantFeatures
+      }
+    });
+
+    map.addLayer({
+      id: 'restaurant-points',
+      type: 'circle',
+      source: 'restaurants',
+      paint: {
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['get', 'views'],
+          1000, 8,
+          2000000, 60
+        ],
+        'circle-color': [
+          'match',
+          ['get', 'category'],
+          'middle eastern', '#e63946',
+          'indian', '#0b00a8',
+          'mexican', '#2a9d8f',
+          'italian', '#5d6eeb',
+          'caribbean', '#b83be9',
+          'delicatessen', '#9fe2c9',
+          'burgers', '#8b4801',
+          'belgian', '#c8aeff',
+          'japanese/sushi', '#fffd6b',
+          'eastern european', '#ff5fdc',
+          'colombian', '#7b1616',
+          'chinese', '#bfff00',
+          'american (traditional)', '#ff7700',
+          'vietnamese', '#650cd9',
+          'southern', '#1ac030',
+          'australian', '#02c9d0',
+          '#888'
+        ],
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#fff'
+      }
+    });
+
+    applyFilters();
+  });
+}
+
 /* =========================
    POPUP
 ========================= */

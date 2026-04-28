@@ -368,3 +368,27 @@ body {
     height: 460px;
   }
 }
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+
+  padding: 10px 16px;
+  border: none;
+  border-radius: 100px;
+
+  background: white;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.theme-toggle.dark {
+  background: #111;
+  color: white;
+}
