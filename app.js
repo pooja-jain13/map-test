@@ -139,7 +139,7 @@ map.on('click', 'restaurant-points', (e) => {
 
         ${props.website ? `
           <div style="margin-bottom: 10px;">
-            <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 13px;">
+            <a href="${props.website}" target="_blank" style="color: #0077ff; text-decoration: underline; font-size: 13px;">
                 Visit Website ↗
             </a>
           </div>

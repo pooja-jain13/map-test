@@ -133,6 +133,23 @@ color: gray;
 margin-bottom: 10px;
 }
 
+
+.more-btn {
+  display: block;       /* This makes the button a 'block' that can be centered */
+  margin: 15px auto 0;  /* 'auto' on the sides pushes it to the dead center */
+  
+  /* Your existing styling */
+  background: #0b00a8;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+
 /* TikTok cards */
 .tiktok-card {
 margin-bottom: 10px;
