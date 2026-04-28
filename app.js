@@ -121,31 +121,24 @@ map.on('load', async () => {
     map.on('zoomend', updateVisibleDotCount);
 });
 
-  /* =========================
-     POPUP
-  ========================= */
 /* =========================
-     POPUP
-  ========================= */
-  map.on('click', 'restaurant-points', (e) => {
-
+   POPUP
+========================= */
+map.on('click', 'restaurant-points', (e) => {
     const props = e.features[0].properties;
     const coords = e.features[0].geometry.coordinates.slice();
     const videos = JSON.parse(props.videos);
 
     const popupNode = document.createElement('div');
+    popupNode.className = 'popup-content';
 
-    // We added class="more-btn" so the JS can find it for the click event
     popupNode.innerHTML = `
-      <div class="popup-content">
-        <div class="popup-title" style="font-weight: bold; font-size: 16px;">${props.title}</div>
-        
-        <div style="color: #0b00a8; font-weight: bold; font-size: 11px; text-transform: uppercase; margin-top: 4px;">
+        <div style="font-weight: bold; font-size: 16px; margin-bottom: 2px;">${props.title}</div>
+        <div style="color: #0b00a8; font-weight: 800; font-size: 11px; text-transform: uppercase; margin-bottom: 6px;">
             ${props.category}
         </div>
-
-        <div class="popup-location" style="font-size: 13px; color: #555; margin-bottom: 8px;">${props.location}</div>
-
+        <div style="font-size: 13px; color: #555; margin-bottom: 8px;">${props.location}</div>
+        
         ${props.website && props.website !== 'null' ? `
           <div style="margin-bottom: 12px;">
             <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 12px;">
@@ -153,31 +146,23 @@ map.on('load', async () => {
             </a>
           </div>
         ` : ''}
-
+        
         <button class="more-btn">More Videos →</button>
-      </div>
     `;
 
-    // This line is what was crashing—it needs the class="more-btn" above to work!
-    popupNode.querySelector('.more-btn').onclick = () => {
-      openModal(videos);
-    };
+    const btn = popupNode.querySelector('.more-btn');
+    if (btn) {
+        btn.onclick = () => {
+            openModal(videos);
+        };
+    }
 
     new mapboxgl.Popup({ offset: 10 })
-      .setLngLat(coords)
-      .setDOMContent(popupNode)
-      .addTo(map);
-  });
-
-    popupNode.querySelector('.more-btn').onclick = () => {
-      openModal(videos);
-    };
-
-    new mapboxgl.Popup()
-      .setLngLat(coords)
-      .setDOMContent(popupNode)
-      .addTo(map);
+        .setLngLat(coords)
+        .setDOMContent(popupNode)
+        .addTo(map);
 });
+
 
 
 /* =========================
