@@ -136,22 +136,22 @@ map.on('load', async () => {
     map.on('zoomend', updateVisibleDotCount);
 });
 
-let isDarkMode = false;
+let isDark = false;
 
 function toggleMapTheme() {
   const btn = document.getElementById('themeToggle');
-
-  isDarkMode = !isDarkMode;
-
-  if (isDarkMode) {
-    map.setStyle('mapbox://styles/mapbox/dark-v11');
-    btn.textContent = '☀️ Light Mode';
-    btn.classList.add('dark');
-  } else {
+  if (isDark) {
     map.setStyle('mapbox://styles/mapbox/light-v11');
-    btn.textContent = '🌙 Dark Mode';
+    btn.innerText = "🌙 Dark Mode";
     btn.classList.remove('dark');
+  } else {
+    map.setStyle('mapbox://styles/mapbox/dark-v11');
+    btn.innerText = "☀️ Light Mode";
+    btn.classList.add('dark');
   }
+
+  isDark = !isDark;
+}
 
   map.once('style.load', () => {
     map.addSource('restaurants', {
