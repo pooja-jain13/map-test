@@ -1,234 +1,209 @@
-
-// 1. Initialize Supabase
+// =========================
+// SUPABASE
+// =========================
 const _supabase = supabase.createClient(
-  'https://djdgwtifvecgppsibsfi.supabase.co', 
+  'https://djdgwtifvecgppsibsfi.supabase.co',
   'sb_publishable_aXvt1g4t--Y1plA_Q7aPEw_UaMj6vPY'
 );
 
-// --- ADDED THIS FUNCTION BACK TO THE TOP ---
-function updateRestaurantCount(count) {
-  const el = document.getElementById('restaurantCount');
-  if (el) {
-    el.textContent = count;
-  }
-}
-
-function updateVisibleDotCount() {
-  const visibleDots = map.queryRenderedFeatures({
-    layers: ['restaurant-points']
-  });
-  updateRestaurantCount(visibleDots.length);
-}
-
+// =========================
+// GLOBAL VARIABLES
+// =========================
 let allRestaurantFeatures = [];
+let currentIndex = 0;
+let currentVideos = [];
+let isDark = false;
+
+// =========================
+// MAPBOX SETUP
+// =========================
 mapboxgl.accessToken = 'pk.eyJ1IjoicGphaW42ODAxIiwiYSI6ImNtbDA3cHZ4bDBhNXkzbHEyMjE5ODR1azUifQ.zkm5kg40QRzCBkbFqr6ZnA';
 
 const map = new mapboxgl.Map({
-container: 'map',
-style: 'mapbox://styles/mapbox/light-v11',
-center: [-73.98, 40.74],
-zoom: 11
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v11',
+  center: [-73.98, 40.74],
+  zoom: 11
 });
 
-function openModal(videos) {
-  const modal = document.getElementById('videoModal');
-
-  modal.style.display = 'flex';
-
-  currentVideos = videos;
-  currentIndex = 0;
-
-  renderVideo();
+// =========================
+// HELPERS
+// =========================
+function updateRestaurantCount(count) {
+  const el = document.getElementById('restaurantCount');
+  if (el) el.textContent = count;
 }
 
-/* =========================
-   RESTAURANT DATA
-========================= */
+function updateVisibleDotCount() {
+  if (!map.getLayer('restaurant-points')) return;
 
-/* =========================
-   MAP LOAD
-========================= */
-map.on('load', async () => {
-    // 1. Fetch from Supabase
-    const { data: restaurants, error } = await _supabase
-        .from('restaurants')
-        .select('*');
+  const visibleDots = map.queryRenderedFeatures({
+    layers: ['restaurant-points']
+  });
 
-    if (error) {
-        console.error('Error:', error);
-        return;
+  updateRestaurantCount(visibleDots.length);
+}
+
+function getTikTokID(url) {
+  if (!url) return null;
+  const match = url.match(/video\/(\d+)/);
+  return match ? match[1] : null;
+}
+
+function restaurantLayerPaint() {
+  return {
+    'circle-radius': [
+      'interpolate',
+      ['linear'],
+      ['get', 'views'],
+      1000, 8,
+      2000000, 60
+    ],
+    'circle-color': [
+      'match',
+      ['get', 'category'],
+      'middle eastern', '#e63946',
+      'indian', '#0b00a8',
+      'mexican', '#2a9d8f',
+      'italian', '#5d6eeb',
+      'caribbean', '#b83be9',
+      'delicatessen', '#9fe2c9',
+      'burgers', '#8b4801',
+      'belgian', '#c8aeff',
+      'japanese/sushi', '#fffd6b',
+      'eastern european', '#ff5fdc',
+      'colombian', '#7b1616',
+      'chinese', '#bfff00',
+      'american (traditional)', '#ff7700',
+      'vietnamese', '#650cd9',
+      'southern', '#1ac030',
+      'australian', '#02c9d0',
+      '#888'
+    ],
+    'circle-stroke-width': 2,
+    'circle-stroke-color': '#fff'
+  };
+}
+
+function addRestaurantLayer() {
+  if (map.getSource('restaurants')) return;
+
+  map.addSource('restaurants', {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: allRestaurantFeatures
     }
+  });
 
-    // 2. Convert database rows to GeoJSON
-    const geojson = {
-        type: 'FeatureCollection',
-        features: restaurants.map(r => ({
-            type: 'Feature',
-            properties: {
-                title: r.name,
-                views: r.views, 
-                category: r.cuisine, // Ensure this column is named 'cuisine' in Supabase
-                location: r.address,
-                website: r.website,
-                videos: JSON.stringify([
-                    { url: r.video_url_1 },
-                    { url: r.video_url_2 },
-                    { url: r.video_url_3 }
-                ].filter(v => v.url)) 
-            },
-            geometry: {
-                type: 'Point',
-                coordinates: [r.longitude, r.latitude]
-            }
-        }))
-    };
+  map.addLayer({
+    id: 'restaurant-points',
+    type: 'circle',
+    source: 'restaurants',
+    paint: restaurantLayerPaint()
+  });
 
-    allRestaurantFeatures = geojson.features;
-    updateRestaurantCount(allRestaurantFeatures.length);
+  applyFilters();
+  setTimeout(updateVisibleDotCount, 300);
+}
 
-    // 3. Add source
-    map.addSource('restaurants', {
-        type: 'geojson',
-        data: geojson
-    });
+// =========================
+// MAP LOAD
+// =========================
+map.on('load', async () => {
+  const { data: restaurants, error } = await _supabase
+    .from('restaurants')
+    .select('*');
 
-    // 4. Add layer (Updated to lowercase to match your new data)
-    map.addLayer({
-        id: 'restaurant-points',
-        type: 'circle',
-        source: 'restaurants',
-        paint: {
-            'circle-radius': [
-                'interpolate',
-                ['linear'],
-                ['get', 'views'],
-                1000, 8,
-                2000000, 60
-            ],
-            'circle-color': [
-                'match',
-                ['get', 'category'],
-                'middle eastern', '#e63946',
-                'indian', '#0b00a8',
-                'mexican', '#2a9d8f',
-                'italian', '#5d6eeb',
-                'caribbean', '#b83be9',
-                'delicatessen', '#9fe2c9',
-                'burgers', '#8b4801',
-                'belgian', '#c8aeff',
-                'japanese/sushi', '#fffd6b',
-                'eastern european', '#ff5fdc',
-                'colombian', '#7b1616',
-                'chinese', '#bfff00',
-                'american (traditional)', '#ff7700',
-                'vietnamese', '#650cd9',
-                'southern', '#1ac030',
-                'australian', '#02c9d0',
-                '#888'
-            ],
-            'circle-stroke-width': 2,
-            'circle-stroke-color': '#fff'
-        }
-    });
-    updateVisibleDotCount();
-
-    map.on('moveend', updateVisibleDotCount);
-    map.on('zoomend', updateVisibleDotCount);
-});
-
-let isDark = false;
-
-function toggleMapTheme() {
-  const btn = document.getElementById('themeToggle');
-  if (isDark) {
-    map.setStyle('mapbox://styles/mapbox/light-v11');
-    btn.innerText = "🌙 Dark Mode";
-    btn.classList.remove('dark');
-  } else {
-    map.setStyle('mapbox://styles/mapbox/dark-v11');
-    btn.innerText = "☀️ Light Mode";
-    btn.classList.add('dark');
+  if (error) {
+    console.error('Supabase error:', error);
+    return;
   }
 
-  isDark = !isDark;
-}
-
-  map.once('style.load', () => {
-    map.addSource('restaurants', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: allRestaurantFeatures
+  const geojson = {
+    type: 'FeatureCollection',
+    features: restaurants.map(r => ({
+      type: 'Feature',
+      properties: {
+        title: r.name,
+        views: Number(r.views) || 0,
+        category: (r.cuisine || '').toLowerCase(),
+        location: r.address,
+        website: r.website,
+        videos: JSON.stringify([
+          { url: r.video_url_1 },
+          { url: r.video_url_2 },
+          { url: r.video_url_3 }
+        ].filter(v => v.url))
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          Number(r.longitude),
+          Number(r.latitude)
+        ]
       }
-    });
+    }))
+  };
 
-    map.addLayer({
-      id: 'restaurant-points',
-      type: 'circle',
-      source: 'restaurants',
-      paint: {
-        'circle-radius': [
-          'interpolate',
-          ['linear'],
-          ['get', 'views'],
-          1000, 8,
-          2000000, 60
-        ],
-        'circle-color': [
-          'match',
-          ['get', 'category'],
-          'middle eastern', '#e63946',
-          'indian', '#0b00a8',
-          'mexican', '#2a9d8f',
-          'italian', '#5d6eeb',
-          'caribbean', '#b83be9',
-          'delicatessen', '#9fe2c9',
-          'burgers', '#8b4801',
-          'belgian', '#c8aeff',
-          'japanese/sushi', '#fffd6b',
-          'eastern european', '#ff5fdc',
-          'colombian', '#7b1616',
-          'chinese', '#bfff00',
-          'american (traditional)', '#ff7700',
-          'vietnamese', '#650cd9',
-          'southern', '#1ac030',
-          'australian', '#02c9d0',
-          '#888'
-        ],
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff'
-      }
-    });
+  allRestaurantFeatures = geojson.features;
+  updateRestaurantCount(allRestaurantFeatures.length);
 
-    applyFilters();
+  map.addSource('restaurants', {
+    type: 'geojson',
+    data: geojson
   });
-}
 
-/* =========================
-   POPUP
-========================= */
+  map.addLayer({
+    id: 'restaurant-points',
+    type: 'circle',
+    source: 'restaurants',
+    paint: restaurantLayerPaint()
+  });
+
+  setTimeout(updateVisibleDotCount, 300);
+
+  map.on('moveend', updateVisibleDotCount);
+  map.on('zoomend', updateVisibleDotCount);
+});
+
+// =========================
+// POPUP
+// =========================
 map.on('click', 'restaurant-points', (e) => {
   const props = e.features[0].properties;
   const coords = e.features[0].geometry.coordinates.slice();
-  const videos = JSON.parse(props.videos);
+  const videos = JSON.parse(props.videos || '[]');
 
+  const firstVideo = videos[0];
+  const firstVideoID = firstVideo ? getTikTokID(firstVideo.url) : null;
 
   const popupNode = document.createElement('div');
 
   popupNode.innerHTML = `
     <div class="popup-content">
       <div class="popup-title">${props.title}</div>
-      <div class="popup-location">${props.location}</div>
-      <div class="popup-category">${props.category}</div>
+      <div class="popup-location">${props.location || ''}</div>
+      <div class="popup-category">${props.category || ''}</div>
 
-            ${props.website && props.website !== 'null' ? `
-          <div style="margin-bottom: 12px;">
-            <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 12px;">
-                Visit Website ↗
-            </a>
-          </div>
-        ` : ''}
-        
+      ${props.website && props.website !== 'null' ? `
+        <div style="margin-bottom: 12px;">
+          <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 12px;">
+            Visit Website ↗
+          </a>
+        </div>
+      ` : ''}
+
+      ${firstVideoID ? `
+        <iframe
+          src="https://www.tiktok.com/embed/${firstVideoID}"
+          width="100%"
+          height="220"
+          frameborder="0"
+          allowfullscreen>
+        </iframe>
+      ` : ''}
+
       <button class="more-btn">More Videos →</button>
     </div>
   `;
@@ -242,24 +217,25 @@ map.on('click', 'restaurant-points', (e) => {
     .setDOMContent(popupNode)
     .addTo(map);
 });
-/* =========================
-   MODAL + ONE VIDEO AT A TIME
-========================= */
 
-let currentIndex = 0;
-let currentVideos = [];
+map.on('mouseenter', 'restaurant-points', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
 
-function getTikTokID(url) {
-  const match = url.match(/video\/(\d+)/);
-  return match ? match[1] : null;
-}
+map.on('mouseleave', 'restaurant-points', () => {
+  map.getCanvas().style.cursor = '';
+});
 
+// =========================
+// MODAL + VIDEO NAVIGATION
+// =========================
 function openModal(videos) {
+  if (!videos || videos.length === 0) return;
+
   const modal = document.getElementById('videoModal');
   const closeBtn = document.querySelector('.close');
   const hint = document.getElementById('swipeHint');
 
-  // Close any open popups so the iframe doesn't conflict
   document.querySelectorAll('.mapboxgl-popup').forEach(p => p.remove());
 
   modal.style.display = 'flex';
@@ -270,11 +246,13 @@ function openModal(videos) {
 
   renderVideo();
 
-  hint.style.display = 'block';
+  if (hint) {
+    hint.style.display = 'block';
 
-  setTimeout(() => {
-    hint.style.display = 'none';
-  }, 8000);
+    setTimeout(() => {
+      hint.style.display = 'none';
+    }, 8000);
+  }
 }
 
 function renderVideo() {
@@ -282,21 +260,27 @@ function renderVideo() {
   const video = currentVideos[currentIndex];
   const videoID = getTikTokID(video.url);
 
-  if (!videoID) return;
+  if (!videoID) {
+    carousel.innerHTML = `
+      <div class="carousel-video">
+        <p>Video unavailable.</p>
+        <button onclick="nextVideo()">Next →</button>
+      </div>
+    `;
+    return;
+  }
 
   carousel.innerHTML = `
     <div class="carousel-video">
-      <iframe 
+      <iframe
         src="https://www.tiktok.com/embed/${videoID}"
-        width="100%" 
+        width="100%"
         height="500"
         frameborder="0"
         allow="autoplay; encrypted-media; fullscreen"
         loading="lazy"
         allowfullscreen>
       </iframe>
-
-      <div>@${video.author} ❤️ ${video.likes}</div>
 
       <a href="${video.url}" target="_blank" class="open-tiktok">
         Watch on TikTok →
@@ -331,6 +315,9 @@ function closeModal() {
 
   modal.style.display = 'none';
   closeBtn.style.display = 'none';
+
+  const carousel = document.getElementById('carousel');
+  if (carousel) carousel.innerHTML = '';
 }
 
 window.onclick = function(e) {
@@ -340,14 +327,12 @@ window.onclick = function(e) {
   }
 };
 
-/* =========================
-   FILTER UI ONLY
-========================= */
-/* =========================
-   FILTER + COUNT
-========================= */
-
+// =========================
+// FILTER + COUNT
+// =========================
 function applyFilters() {
+  if (!map.getLayer('restaurant-points')) return;
+
   const cuisine = document.getElementById('cuisineFilter').value;
   const views = document.getElementById('viewsFilter').value;
 
@@ -377,7 +362,6 @@ function applyFilters() {
 
   map.setFilter('restaurant-points', filters);
 
-  // Wait for map to update, then count visible dots
   setTimeout(updateVisibleDotCount, 100);
 }
 
@@ -385,11 +369,35 @@ function resetFilters() {
   document.getElementById('cuisineFilter').value = 'all';
   document.getElementById('viewsFilter').value = 'all';
 
-  map.setFilter('restaurant-points', null);
+  if (map.getLayer('restaurant-points')) {
+    map.setFilter('restaurant-points', null);
+  }
 
   setTimeout(updateVisibleDotCount, 100);
 }
 
+// =========================
+// LIGHT / DARK MODE
+// =========================
+function toggleMapTheme() {
+  const btn = document.getElementById('themeToggle');
+
+  if (isDark) {
+    map.setStyle('mapbox://styles/mapbox/light-v11');
+    btn.textContent = '🌙 Dark Mode';
+    btn.classList.remove('dark');
+  } else {
+    map.setStyle('mapbox://styles/mapbox/dark-v11');
+    btn.textContent = '☀️ Light Mode';
+    btn.classList.add('dark');
+  }
+
+  isDark = !isDark;
+
+  map.once('style.load', () => {
+    addRestaurantLayer();
+  });
+}
 
 
 /* =========================
