@@ -390,12 +390,24 @@ function toggleMapTheme() {
 // =========================
 function enterMap() {
   const intro = document.getElementById('introScreen');
-  intro.style.display = 'none';
-  map.resize();
+
+  intro.classList.add('fade-out');
+
+  setTimeout(() => {
+    intro.style.display = 'none';
+    map.resize();
+  }, 500);
+}
+
+function showIntro() {
+  const intro = document.getElementById('introScreen');
+
+  intro.style.display = 'flex';
+  intro.classList.remove('fade-out');
 }
 
 document.getElementById('enterMapBtn').addEventListener('click', enterMap);
-
+document.getElementById('backIntroBtn').addEventListener('click', showIntro);
 
 /* =========================
 add restaurant button

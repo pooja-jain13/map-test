@@ -434,3 +434,28 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
+
+#introScreen {
+  transition: opacity 0.5s ease;
+}
+
+#introScreen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.back-intro-btn {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 9999;
+
+  background: white;
+  color: #111;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 100px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
