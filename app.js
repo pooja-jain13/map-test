@@ -144,8 +144,6 @@ map.on('click', 'restaurant-points', (e) => {
   const coords = e.features[0].geometry.coordinates.slice();
   const videos = JSON.parse(props.videos);
 
-  const firstVideo = videos[0];
-  const videoID = firstVideo ? getTikTokID(firstVideo.url) : null;
 
   const popupNode = document.createElement('div');
 
@@ -153,16 +151,6 @@ map.on('click', 'restaurant-points', (e) => {
     <div class="popup-content">
       <div class="popup-title">${props.title}</div>
       <div class="popup-location">${props.location}</div>
-
-      ${videoID ? `
-        <iframe 
-          src="https://www.tiktok.com/embed/${videoID}"
-          width="100%"
-          height="220"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
-      ` : ''}
 
       <button class="more-btn">More Videos →</button>
     </div>
