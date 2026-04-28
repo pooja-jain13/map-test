@@ -153,6 +153,14 @@ map.on('click', 'restaurant-points', (e) => {
       <div class="popup-location">${props.location}</div>
       <div class="popup-category">${props.category}</div>
 
+            ${props.website && props.website !== 'null' ? `
+          <div style="margin-bottom: 12px;">
+            <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 12px;">
+                Visit Website ↗
+            </a>
+          </div>
+        ` : ''}
+        
       <button class="more-btn">More Videos →</button>
     </div>
   `;
