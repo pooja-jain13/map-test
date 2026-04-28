@@ -5,7 +5,7 @@ const _supabase = supabase.createClient(
   'sb_publishable_aXvt1g4t--Y1plA_Q7aPEw_UaMj6vPY'
 );
 
-
+let allRestaurantFeatures = [];
 mapboxgl.accessToken = 'pk.eyJ1IjoicGphaW42ODAxIiwiYSI6ImNtbDA3cHZ4bDBhNXkzbHEyMjE5ODR1azUifQ.zkm5kg40QRzCBkbFqr6ZnA';
 
 const map = new mapboxgl.Map({
@@ -66,6 +66,9 @@ map.on('load', async () => {
             }
         }))
     };
+
+    allRestaurantFeatures = geojson.features;
+    updateRestaurantCount(allRestaurantFeatures.length);
 
     // 3. Add source
     map.addSource('restaurants', {
@@ -274,12 +277,34 @@ function applyFilters() {
   }
 
   map.setFilter('restaurant-points', filters);
+
+  const visibleCount = allRestaurantFeatures.filter(feature => {
+    const categoryMatch = cuisine === 'all' || feature.properties.category === cuisine;
+    const viewCount = feature.properties.views;
+
+    let viewsMatch = true;
+
+    if (views === 'low') viewsMatch = viewCount < 50000;
+    if (views === 'trending') viewsMatch = viewCount >= 50000 && viewCount < 250000;
+    if (views === 'viral') viewsMatch = viewCount >= 250000 && viewCount < 1000000;
+    if (views === 'super') viewsMatch = viewCount >= 1000000;
+
+    return categoryMatch && viewsMatch;
+  }).length;
+
+  updateRestaurantCount(visibleCount);
+}
+
+function updateRestaurantCount(count) {
+  document.getElementById('restaurantCount').textContent = count;
 }
 
 function resetFilters() {
   document.getElementById('cuisineFilter').value = 'all';
   document.getElementById('viewsFilter').value = 'all';
+
   map.setFilter('restaurant-points', null);
+  updateRestaurantCount(allRestaurantFeatures.length);
 }
 
 

@@ -238,3 +238,49 @@ margin-top: 4px;
 .fab svg {
     flex-shrink: 0;
 }
+
+/* restaurant-count */
+.restaurant-count {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #333;
+}
+
+.restaurant-count span {
+  color: #0b00a8;
+  font-weight: bold;
+}
+
+.legend {
+  margin-top: 16px;
+  font-size: 12px;
+}
+
+.legend h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.mexican { background: #2a9d8f; }
+.dot.italian { background: #5d6eeb; }
+.dot.middle-eastern { background: #e63946; }
+.dot.caribbean { background: #b83be9; }
+.dot.burgers { background: #8b4801; }
+.dot.indian { background: #0b00a8; }
+.dot.chinese { background: #bfff00; }
+.dot.american { background: #ff7700; }
+.dot.vietnamese { background: #650cd9; }
