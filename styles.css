@@ -356,3 +356,35 @@ margin-top: 4px;
 .dot.chinese { background: #bfff00; }
 .dot.american { background: #ff7700; }
 .dot.vietnamese { background: #650cd9; }
+
+/* =========================
+   LEGEND (COLOR DOTS)
+========================= */
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+  font-size: 14px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.dot.mexican { background: #2a9d8f; }
+.dot.italian { background: #5d6eeb; }
+.dot.middle-eastern { background: #e63946; }
+.dot.caribbean { background: #b83be9; }
+.dot.burgers { background: #8b4801; }
+.dot.indian { background: #0b00a8; }
+.dot.chinese { background: #bfff00; }
+.dot.american { background: #ff7700; }
+.dot.vietnamese { background: #650cd9; }
+.dot.southern { background: #1ac030; }
+.dot.australian { background: #02c9d0; }

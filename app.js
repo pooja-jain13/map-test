@@ -115,6 +115,10 @@ map.on('load', async () => {
             'circle-stroke-color': '#fff'
         }
     });
+    updateVisibleDotCount();
+
+    map.on('moveend', updateVisibleDotCount);
+    map.on('zoomend', updateVisibleDotCount);
 });
 
   /* =========================
@@ -261,6 +265,10 @@ window.onclick = function(e) {
 /* =========================
    FILTER UI ONLY
 ========================= */
+/* =========================
+   FILTER + COUNT
+========================= */
+
 function applyFilters() {
   const cuisine = document.getElementById('cuisineFilter').value;
   const views = document.getElementById('viewsFilter').value;
@@ -274,12 +282,14 @@ function applyFilters() {
   if (views === 'low') {
     filters.push(['<', ['get', 'views'], 50000]);
   } else if (views === 'trending') {
-    filters.push(['all',
+    filters.push([
+      'all',
       ['>=', ['get', 'views'], 50000],
       ['<', ['get', 'views'], 250000]
     ]);
   } else if (views === 'viral') {
-    filters.push(['all',
+    filters.push([
+      'all',
       ['>=', ['get', 'views'], 250000],
       ['<', ['get', 'views'], 1000000]
     ]);
@@ -289,25 +299,8 @@ function applyFilters() {
 
   map.setFilter('restaurant-points', filters);
 
-  const visibleCount = allRestaurantFeatures.filter(feature => {
-    const categoryMatch = cuisine === 'all' || feature.properties.category === cuisine;
-    const viewCount = feature.properties.views;
-
-    let viewsMatch = true;
-
-    if (views === 'low') viewsMatch = viewCount < 50000;
-    if (views === 'trending') viewsMatch = viewCount >= 50000 && viewCount < 250000;
-    if (views === 'viral') viewsMatch = viewCount >= 250000 && viewCount < 1000000;
-    if (views === 'super') viewsMatch = viewCount >= 1000000;
-
-    return categoryMatch && viewsMatch;
-  }).length;
-
-  updateRestaurantCount(visibleCount);
-}
-
-function updateRestaurantCount(count) {
-  document.getElementById('restaurantCount').textContent = count;
+  // Wait for map to update, then count visible dots
+  setTimeout(updateVisibleDotCount, 100);
 }
 
 function resetFilters() {
@@ -315,7 +308,16 @@ function resetFilters() {
   document.getElementById('viewsFilter').value = 'all';
 
   map.setFilter('restaurant-points', null);
-  updateRestaurantCount(allRestaurantFeatures.length);
+
+  setTimeout(updateVisibleDotCount, 100);
+}
+
+function updateVisibleDotCount() {
+  const visibleDots = map.queryRenderedFeatures({
+    layers: ['restaurant-points']
+  });
+
+  document.getElementById('restaurantCount').textContent = visibleDots.length;
 }
 
 
