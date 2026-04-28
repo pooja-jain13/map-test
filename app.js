@@ -125,29 +125,31 @@ map.on('load', async () => {
    POPUP
 ========================= */
 map.on('click', 'restaurant-points', (e) => {
-    const props = e.features[0].properties;
-    const coords = e.features[0].geometry.coordinates.slice();
-    const videos = JSON.parse(props.videos);
+  const props = e.features[0].properties;
+  const coords = e.features[0].geometry.coordinates.slice();
+  const videos = JSON.parse(props.videos);
 
-    const popupNode = document.createElement('div');
-    popupNode.className = 'popup-content';
+  const firstVideo = videos[0];
+  const videoID = firstVideo ? getTikTokID(firstVideo.url) : null;
 
-    popupNode.innerHTML = `
-        <div style="font-weight: bold; font-size: 16px; margin-bottom: 2px;">${props.title}</div>
-        <div style="color: #0b00a8; font-weight: 800; font-size: 11px; text-transform: uppercase; margin-bottom: 6px;">
-            ${props.category}
-        </div>
-        <div style="font-size: 13px; color: #555; margin-bottom: 8px;">${props.location}</div>
-        
-        ${props.website && props.website !== 'null' ? `
-          <div style="margin-bottom: 12px;">
-            <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 12px;">
-                Visit Website ↗
-            </a>
-          </div>
-        ` : ''}
-        
-        <button class="more-btn">More Videos →</button>
+  const popupNode = document.createElement('div');
+
+  popupNode.innerHTML = `
+    <div class="popup-content">
+      <div class="popup-title">${props.title}</div>
+      <div class="popup-location">${props.location}</div>
+
+      ${videoID ? `
+        <iframe 
+          src="https://www.tiktok.com/embed/${videoID}"
+          width="100%"
+          height="220"
+          frameborder="0"
+          allowfullscreen>
+        </iframe>
+      ` : ''}
+
+      <button class="more-btn">More Videos →</button>
     </div>
   `;
 
@@ -155,15 +157,11 @@ map.on('click', 'restaurant-points', (e) => {
     openModal(videos);
   };
 
-
-    new mapboxgl.Popup({ offset: 10 })
-        .setLngLat(coords)
-        .setDOMContent(popupNode)
-        .addTo(map);
+  new mapboxgl.Popup({ offset: 10 })
+    .setLngLat(coords)
+    .setDOMContent(popupNode)
+    .addTo(map);
 });
-
-
-
 /* =========================
    MODAL + ONE VIDEO AT A TIME
 ========================= */
