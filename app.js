@@ -151,6 +151,7 @@ map.on('click', 'restaurant-points', (e) => {
     <div class="popup-content">
       <div class="popup-title">${props.title}</div>
       <div class="popup-location">${props.location}</div>
+      <div class="popup-category">${props.category}</div>
 
       <button class="more-btn">More Videos →</button>
     </div>
