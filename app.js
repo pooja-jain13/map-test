@@ -174,10 +174,6 @@ map.on('click', 'restaurant-points', (e) => {
   const props = e.features[0].properties;
   const coords = e.features[0].geometry.coordinates.slice();
   const videos = JSON.parse(props.videos || '[]');
-
-  const firstVideo = videos[0];
-  const firstVideoID = firstVideo ? getTikTokID(firstVideo.url) : null;
-
   const popupNode = document.createElement('div');
 
   popupNode.innerHTML = `
