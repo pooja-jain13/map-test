@@ -124,26 +124,31 @@ map.on('load', async () => {
   /* =========================
      POPUP
   ========================= */
-map.on('click', 'restaurant-points', (e) => {
+/* =========================
+     POPUP
+  ========================= */
+  map.on('click', 'restaurant-points', (e) => {
+
     const props = e.features[0].properties;
     const coords = e.features[0].geometry.coordinates.slice();
     const videos = JSON.parse(props.videos);
 
     const popupNode = document.createElement('div');
 
+    // We added class="more-btn" so the JS can find it for the click event
     popupNode.innerHTML = `
-      <div style="padding: 5px;">
+      <div class="popup-content">
         <div class="popup-title" style="font-weight: bold; font-size: 16px;">${props.title}</div>
         
-        <div style="color: #0b00a8; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-top: 4px;">
+        <div style="color: #0b00a8; font-weight: bold; font-size: 11px; text-transform: uppercase; margin-top: 4px;">
             ${props.category}
         </div>
 
-        <div class="popup-location" style="margin-bottom: 8px;">${props.location}</div>
+        <div class="popup-location" style="font-size: 13px; color: #555; margin-bottom: 8px;">${props.location}</div>
 
-        ${props.website ? `
-          <div style="margin-bottom: 10px;">
-            <a href="${props.website}" target="_blank" style="color: #0077ff; text-decoration: underline; font-size: 13px;">
+        ${props.website && props.website !== 'null' ? `
+          <div style="margin-bottom: 12px;">
+            <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 12px;">
                 Visit Website ↗
             </a>
           </div>
@@ -152,6 +157,17 @@ map.on('click', 'restaurant-points', (e) => {
         <button class="more-btn">More Videos →</button>
       </div>
     `;
+
+    // This line is what was crashing—it needs the class="more-btn" above to work!
+    popupNode.querySelector('.more-btn').onclick = () => {
+      openModal(videos);
+    };
+
+    new mapboxgl.Popup({ offset: 10 })
+      .setLngLat(coords)
+      .setDOMContent(popupNode)
+      .addTo(map);
+  });
 
     popupNode.querySelector('.more-btn').onclick = () => {
       openModal(videos);
