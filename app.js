@@ -409,6 +409,8 @@ function showIntro() {
   intro.classList.remove('fade-out');
   backBtn.style.display = 'none';
 }
+document.getElementById('enterMapBtn').addEventListener('click', enterMap);
+document.getElementById('backIntroBtn').addEventListener('click', showIntro);
 /* =========================
 add restaurant button
 ========================= */
