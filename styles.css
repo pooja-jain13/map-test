@@ -12,18 +12,25 @@ width: 100%;
 }
 
 /* FILTERS */
+/* FILTER PANEL */
 .filter-panel {
   position: absolute;
   top: 20px;
   left: 20px;
   z-index: 10;
+
+  width: 260px;
+  max-height: 90vh;
+  overflow-y: auto;
+
   background: white;
   padding: 18px;
   border-radius: 14px;
-  width: 260px;
+
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
+/* Title */
 .filter-panel h2 {
   margin: 0;
   font-size: 20px;
@@ -32,8 +39,10 @@ width: 100%;
 .filter-panel p {
   margin: 4px 0 14px;
   font-size: 13px;
+  color: #555;
 }
 
+/* Labels */
 .filter-panel label {
   display: block;
   margin-top: 12px;
@@ -42,6 +51,7 @@ width: 100%;
   font-size: 13px;
 }
 
+/* Inputs */
 .filter-panel select,
 .filter-panel button {
   width: 100%;
@@ -50,6 +60,7 @@ width: 100%;
   border: 1px solid #ccc;
 }
 
+/* Button */
 .filter-panel button {
   margin-top: 14px;
   background: #0b00a8;
@@ -58,6 +69,50 @@ width: 100%;
   cursor: pointer;
   font-weight: bold;
 }
+
+.filter-panel button:hover {
+  background: #1a0dab;
+}
+
+/* COUNT */
+.restaurant-count {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #333;
+}
+
+/* LEGEND */
+.legend {
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.legend h3 {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* DOTS */
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* COLORS (MATCH YOUR MAP EXACTLY) */
+.dot.mexican { background: #2a9d8f; }
+.dot.italian { background: #5d6eeb; }
+.dot.middle-eastern { background: #e63946; }
+.dot.caribbean { background: #b83be9; }
+.dot.burgers { background: #8b4801; }
+.dot.indian { background: #0b00a8; }
+.dot.chinese { background: #bfff00; }
+.dot.american { background: #ff7700; }
+.dot.vietnamese { background: #650cd9; }
+.dot.southern { background: #1ac030; }
+.dot.australian { background: #02c9d0; }
 
 /* POPUP */
 .mapboxgl-popup-content {
