@@ -389,9 +389,12 @@ function toggleMapTheme() {
 // INTRO SCREEN
 // =========================
 function enterMap() {
-  document.getElementById('introScreen').style.display = 'none';
+  const intro = document.getElementById('introScreen');
+  intro.style.display = 'none';
   map.resize();
 }
+
+document.getElementById('enterMapBtn').addEventListener('click', enterMap);
 
 
 /* =========================
