@@ -261,7 +261,7 @@ function renderVideo() {
       <iframe
         src="https://www.tiktok.com/embed/${videoID}"
         width="100%"
-        height="500"
+        height="650"
         frameborder="0"
         allow="autoplay; encrypted-media; fullscreen"
         loading="lazy"
