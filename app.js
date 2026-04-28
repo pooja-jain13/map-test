@@ -5,6 +5,21 @@ const _supabase = supabase.createClient(
   'sb_publishable_aXvt1g4t--Y1plA_Q7aPEw_UaMj6vPY'
 );
 
+// --- ADDED THIS FUNCTION BACK TO THE TOP ---
+function updateRestaurantCount(count) {
+  const el = document.getElementById('restaurantCount');
+  if (el) {
+    el.textContent = count;
+  }
+}
+
+function updateVisibleDotCount() {
+  const visibleDots = map.queryRenderedFeatures({
+    layers: ['restaurant-points']
+  });
+  updateRestaurantCount(visibleDots.length);
+}
+
 let allRestaurantFeatures = [];
 mapboxgl.accessToken = 'pk.eyJ1IjoicGphaW42ODAxIiwiYSI6ImNtbDA3cHZ4bDBhNXkzbHEyMjE5ODR1azUifQ.zkm5kg40QRzCBkbFqr6ZnA';
 
@@ -310,13 +325,6 @@ function resetFilters() {
   setTimeout(updateVisibleDotCount, 100);
 }
 
-function updateVisibleDotCount() {
-  const visibleDots = map.queryRenderedFeatures({
-    layers: ['restaurant-points']
-  });
-
-  document.getElementById('restaurantCount').textContent = visibleDots.length;
-}
 
 
 /* =========================
