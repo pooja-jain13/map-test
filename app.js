@@ -54,6 +54,7 @@ map.on('load', async () => {
                 views: r.views, 
                 category: r.cuisine, // Ensure this column is named 'cuisine' in Supabase
                 location: r.address,
+                website: r.website
                 videos: JSON.stringify([
                     { url: r.video_url_1 },
                     { url: r.video_url_2 },
@@ -119,25 +120,35 @@ map.on('load', async () => {
   /* =========================
      POPUP
   ========================= */
-  map.on('click', 'restaurant-points', (e) => {
-
+map.on('click', 'restaurant-points', (e) => {
     const props = e.features[0].properties;
     const coords = e.features[0].geometry.coordinates.slice();
-
     const videos = JSON.parse(props.videos);
 
     const popupNode = document.createElement('div');
 
     popupNode.innerHTML = `
-      <div>
-        <div class="popup-title">${props.title}</div>
-        <div class="popup-location">${props.location}</div>
+      <div style="padding: 5px;">
+        <div class="popup-title" style="font-weight: bold; font-size: 16px;">${props.title}</div>
+        
+        <div style="color: #0b00a8; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-top: 4px;">
+            ${props.category}
+        </div>
+
+        <div class="popup-location" style="margin-bottom: 8px;">${props.location}</div>
+
+        ${props.website ? `
+          <div style="margin-bottom: 10px;">
+            <a href="${props.website}" target="_blank" style="color: #666; text-decoration: underline; font-size: 13px;">
+                Visit Website ↗
+            </a>
+          </div>
+        ` : ''}
 
         <button class="more-btn">More Videos →</button>
       </div>
     `;
 
-    /* 🔥 THIS is the correct event binding */
     popupNode.querySelector('.more-btn').onclick = () => {
       openModal(videos);
     };
@@ -146,7 +157,7 @@ map.on('load', async () => {
       .setLngLat(coords)
       .setDOMContent(popupNode)
       .addTo(map);
-  });
+});
 
 
 /* =========================
