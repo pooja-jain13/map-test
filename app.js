@@ -383,10 +383,14 @@ function toggleMapTheme() {
   map.once('style.load', () => {
     addRestaurantLayer();
   });
-  function enterMap() {
+}
+
+// =========================
+// INTRO SCREEN
+// =========================
+function enterMap() {
   document.getElementById('introScreen').style.display = 'none';
   map.resize();
-}
 }
 
 
