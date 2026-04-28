@@ -271,3 +271,24 @@ function setFilter(category, btn) {
 
   btn.classList.add('active');
 }
+
+
+/* =========================
+add restaurant button
+========================= */
+
+
+const fab = document.getElementById('add-btn');
+const overlay = document.getElementById('form-overlay');
+const closeBtn = document.querySelector('.close-panel');
+
+fab.addEventListener('click', () => {
+    overlay.style.display = 'block';
+    // Small timeout to allow display:block to hit before adding the class for animation
+    setTimeout(() => overlay.classList.add('active'), 10);
+});
+
+closeBtn.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.style.display = 'none', 400);
+});
