@@ -235,8 +235,9 @@ margin-top: 4px;
 
 .panel-content {
     flex-grow: 1;
-    overflow-y: auto; /* Allows scrolling inside the panel if form is long */
-    padding: 10px;
+    height: 100%;
+    overflow-y: auto; /* This allows you to scroll the form if it's long */
+    -webkit-overflow-scrolling: touch; /* Makes scrolling smooth on iPhones */
 }
 
 .panel-handle {
@@ -258,5 +259,3 @@ margin-top: 4px;
     cursor: pointer;
     font-size: 20px;
 }
-
-iframe { border: 5px solid red !important; }
