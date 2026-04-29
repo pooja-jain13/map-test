@@ -56,7 +56,7 @@ function restaurantLayerPaint() {
       'interpolate',
       ['linear'],
       ['get', 'views'],
-      1000, 8,
+      1000, 20,
       2000000, 60
     ],
     'circle-color': [
