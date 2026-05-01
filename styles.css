@@ -336,52 +336,58 @@ body {
    MOBILE RESPONSIVE
 ========================= */
 /* =========================
-   KIOSK TIKTOK FIX
+   KIOSK VIDEO (FINAL FIX)
 ========================= */
-@media (orientation: portrait) and (min-width: 700px) {
-  #carouselWrapper {
-    width: 430px !important;
-    max-width: 430px !important;
-    height: 760px !important;
-    max-height: 760px !important;
+@media (orientation: portrait) {
 
-    overflow: visible !important;
-    transform: scale(1.45);
-    transform-origin: center center;
+  #carouselWrapper {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    background: transparent;
   }
 
   #carousel {
     width: 100%;
     height: 100%;
-    padding: 0 !important;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: 0;
   }
 
   .carousel-video {
-    width: 430px !important;
-    height: 760px !important;
+    height: 90vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
 
   .carousel-video iframe {
-    width: 430px !important;
-    height: 760px !important;
+    height: 90vh;
+    aspect-ratio: 9 / 16;   /* 🔥 THIS is the fix */
+    width: auto;
+
     border-radius: 22px;
     background: black;
   }
 
   .open-tiktok {
-    font-size: 18px !important;
-    margin-top: 14px !important;
+    font-size: 22px;
+    margin-top: 18px;
   }
 
   .nav-buttons {
-    margin-top: 14px !important;
-    transform: scale(1.2);
+    margin-top: 20px;
+    transform: scale(1.3);
   }
 }
 
