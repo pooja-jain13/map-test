@@ -335,47 +335,168 @@ body {
 /* =========================
    MOBILE RESPONSIVE
 ========================= */
-/* =========================
-   KIOSK VIDEO (FINAL FIX)
-========================= */
-@media (orientation: portrait) {
-
-  #carouselWrapper {
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-    background: transparent;
+@media (max-width: 600px) {
+  .filter-panel {
+    width: calc(100vw - 60px);
+    max-height: 60vh;
+    top: 15px;
+    left: 15px;
+    padding: 18px;
   }
 
-  #carousel {
-    width: 100%;
-    height: 100%;
+  .filter-panel h2 {
+    font-size: 24px;
+  }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .filter-panel p {
+    font-size: 15px;
+  }
+
+  .fab {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+  }
+
+  .carousel-video iframe {
+    height: 460px;
+  }
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999; /* 🔥 THIS is the real fix */
+
+  padding: 10px 16px;
+  border: none;
+  border-radius: 100px;
+
+  background: white;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.theme-toggle.dark {
+  background: #111;
+  color: white;
+}
+
+#introScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: linear-gradient(135deg, #0b00a8, #ff0050);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-card {
+  background: white;
+  width: 360px;
+  max-width: 85vw;
+  padding: 32px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.intro-card h1 {
+  margin: 0 0 12px;
+  font-size: 36px;
+}
+
+.intro-card p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #444;
+}
+
+.intro-card button {
+  margin-top: 20px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 100px;
+  background: #0b00a8;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#introScreen {
+  transition: opacity 0.5s ease;
+}
+
+#introScreen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.back-intro-btn {
+  position: fixed;
+  top: 70px; /* below dark mode */
+  right: 20px;
+  z-index: 9999;
+
+  background: white;
+  color: #111;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 100px;
+  font-weight: 700;
+  cursor: pointer;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.back-intro-btn {
+  display: none;
+}
+
+/* =========================
+   KIOSK / PORTRAIT DISPLAY VIDEO FIX
+========================= */
+@media (orientation: portrait) {
+  #carouselWrapper {
+  width: 95vw;          /* was 70vw → make it wider */
+  max-width: 900px;     /* allow bigger size */
+  height:90vh;         /* give more height */
+  max-height: none;     /* remove restriction */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  background: transparent;
+}
+
+  #carousel {
+    height: 100%;
     padding: 0;
   }
 
   .carousel-video {
-    height: 90vh;
+  width: 100%;
+  height: 100%;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
   .carousel-video iframe {
-    height: 90vh;
-    aspect-ratio: 9 / 16;   /* 🔥 THIS is the fix */
-    width: auto;
-
+    width: 100%;
+    height: 100%;
     border-radius: 22px;
     background: black;
   }
@@ -387,8 +508,42 @@ body {
 
   .nav-buttons {
     margin-top: 20px;
-    transform: scale(1.3);
+    transform: scale(1.35);
   }
+}
+
+/* INTRO CARD (BIG SCREEN / KIOSK FIX) */
+.intro-card {
+  width: 90vw;
+  max-width: 900px;
+  padding: 60px 50px;
+
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+
+  text-align: center;
+}
+
+/* Title */
+.intro-card h1 {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+/* Description */
+.intro-card p {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Button */
+.intro-card button {
+  font-size: 22px;
+  padding: 16px 32px;
+  border-radius: 999px;
 }
 
 /* =========================
