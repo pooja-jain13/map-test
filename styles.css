@@ -282,26 +282,63 @@ body {
 
 .nav-buttons {
   position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  pointer-events: none; /* allows clicks to pass through except buttons */
+}
+
+/* LEFT BUTTON */
+.nav-buttons .prev {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* RIGHT BUTTON */
+.nav-buttons .next {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* BUTTON STYLE */
+.nav-buttons button {
+  pointer-events: auto; /* re-enable clicking */
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(0,0,0,0.5);
+  color: white;
+
+  font-size: 26px;
+  font-weight: bold;
+
+  cursor: pointer;
 
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
 
-  z-index: 1001;
+  backdrop-filter: blur(6px);
+  transition: 0.2s ease;
+}
+
+.nav-buttons button:hover {
+  background: rgba(0,0,0,0.8);
+  transform: translateY(-50%) scale(1.1);
 }
 
 .nav-buttons button {
-  border: none;
-  background: white;
-  color: black;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
+  opacity: 0.7;
+}
+
+.nav-buttons button:hover {
+  opacity: 1;
 }
 
 /* =========================
