@@ -753,39 +753,54 @@ body {
 
 .custom-dropdown-trigger {
   width: 100%;
-  padding: 13px;
-  border-radius: 9px;
-  border: 1px solid #bbb;
-  background: white;
-  font-size: 16px;
-  text-align: left;
+  padding: 12px 16px;   /* 👈 smaller */
+  border-radius: 12px;  /* 👈 slightly tighter */
+
+  background: rgba(11, 0, 168, 0.92);
+  color: white;
+
+  font-size: 16px;      /* 👈 smaller text */
+  font-weight: 700;
+
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .custom-dropdown-menu {
   display: none;
+
   position: absolute;
-  top: 52px;
-  left: 0;
-  width: 100%;
-  max-height: 260px;
+  top: calc(100% + 8px);
+
+  left: 50%;                 /* 👈 center horizontally */
+  transform: translateX(-50%) translateY(-6px) scale(0.98);
+
+  width: 92%;                /* 👈 keeps it inside panel nicely */
+  max-height: 280px;
   overflow-y: auto;
+
+  background: rgba(35, 35, 35, 0.85);
+  backdrop-filter: blur(18px);
+
+  border-radius: 16px;
+  padding: 8px;
+
   z-index: 99999;
 
-  background: white;
-  border: 1px solid #bbb;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  opacity: 0;
+  transition: 0.2s ease;
 }
 
 .custom-dropdown.open .custom-dropdown-menu {
   display: block;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 .custom-dropdown-option {
-  padding: 13px;
-  font-size: 16px;
-  cursor: pointer;
+  padding: 10px 14px;   /* 👈 smaller */
+  font-size: 15px;
+  border-radius: 10px;
 }
 
 .custom-dropdown-option:hover {
