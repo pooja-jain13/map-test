@@ -282,11 +282,19 @@ function renderVideo() {
         Watch on TikTok →
       </a>
 
-      <div class="nav-buttons">
-        <button onclick="prevVideo()">←</button>
-        <span>${currentIndex + 1} / ${currentVideos.length}</span>
-        <button onclick="nextVideo()">→</button>
-      </div>
+    <div class="nav-buttons">
+
+  ${currentIndex > 0 ? `
+    <button onclick="prevVideo()">←</button>
+  ` : ``}
+
+  <span>${currentIndex + 1} / ${currentVideos.length}</span>
+
+  ${currentIndex < currentVideos.length - 1 ? `
+    <button onclick="nextVideo()">→</button>
+  ` : ``}
+
+</div>
 
     </div>
   `;
