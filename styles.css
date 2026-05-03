@@ -687,3 +687,26 @@ body {
 
   cursor: pointer;
 }
+
+/* FORCE CLOSE BUTTON ON TOP */
+#videoModal .close {
+  display: flex !important;
+  position: fixed !important;
+  top: 24px !important;
+  right: 28px !important;
+  z-index: 999999 !important;
+
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+
+  font-size: 42px;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
