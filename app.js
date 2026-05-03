@@ -219,13 +219,11 @@ function openModal(videos) {
   if (!videos || videos.length === 0) return;
 
   const modal = document.getElementById('videoModal');
-  const closeBtn = document.querySelector('.close');
   const hint = document.getElementById('swipeHint');
 
   document.querySelectorAll('.mapboxgl-popup').forEach(p => p.remove());
 
   modal.style.display = 'flex';
-  closeBtn.style.display = 'block';
 
   currentVideos = videos;
   currentIndex = 0;
@@ -303,10 +301,8 @@ function prevVideo() {
 
 function closeModal() {
   const modal = document.getElementById('videoModal');
-  const closeBtn = document.querySelector('.close');
 
   modal.style.display = 'none';
-  closeBtn.style.display = 'none';
 
   const carousel = document.getElementById('carousel');
   if (carousel) carousel.innerHTML = '';
