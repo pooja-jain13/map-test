@@ -421,31 +421,29 @@ function showIntro() {
 document.getElementById('enterMapBtn').addEventListener('click', enterMap);
 document.getElementById('backIntroBtn').addEventListener('click', showIntro);
 
-let touchStartX = 0;
-let touchEndX = 0;
-
-function handleSwipe() {
-  const swipeDistance = touchEndX - touchStartX;
-
-  if (swipeDistance > 60) {
-    prevVideo(); // swipe right
-  }
-
-  if (swipeDistance < -60) {
-    nextVideo(); // swipe left
-  }
-}
-
-const videoModal = document.getElementById('videoModal');
-
-videoModal.addEventListener('touchstart', function(e) {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-videoModal.addEventListener('touchend', function(e) {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-});
 /* =========================
-add restaurant button
+SWIPE SUPPORT
 ========================= */
+
+let swipeStartX = 0;
+let swipeEndX = 0;
+
+const modalSwipeArea = document.getElementById('videoModal');
+
+modalSwipeArea.addEventListener('pointerdown', function(e) {
+  swipeStartX = e.clientX;
+});
+
+modalSwipeArea.addEventListener('pointerup', function(e) {
+  swipeEndX = e.clientX;
+
+  const swipeDistance = swipeEndX - swipeStartX;
+
+  if (swipeDistance > 80) {
+    prevVideo();
+  }
+
+  if (swipeDistance < -80) {
+    nextVideo();
+  }
+});

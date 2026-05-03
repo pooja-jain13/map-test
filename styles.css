@@ -716,3 +716,7 @@ body {
 
   cursor: pointer;
 }
+
+#videoModal {
+  touch-action: pan-y;
+}
