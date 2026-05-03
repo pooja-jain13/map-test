@@ -475,20 +475,32 @@ function setupCustomDropdown(selectId) {
   const menu = document.createElement('div');
   menu.className = 'custom-dropdown-menu';
 
-  Array.from(select.options).forEach(option => {
-    const item = document.createElement('div');
-    item.className = 'custom-dropdown-option';
-    item.textContent = option.textContent;
+Array.from(select.options).forEach(option => {
+  const item = document.createElement('div');
 
-    item.addEventListener('click', () => {
-      select.value = option.value;
-      trigger.textContent = option.textContent;
-      wrapper.classList.remove('open');
-      applyFilters();
+  item.className = option.value === select.value
+    ? 'custom-dropdown-option selected'
+    : 'custom-dropdown-option';
+
+  item.textContent = option.textContent;
+
+  item.addEventListener('click', () => {
+    select.value = option.value;
+    trigger.textContent = option.textContent;
+
+    // 👇 THIS is what you were asking about — PUT IT HERE
+    menu.querySelectorAll('.custom-dropdown-option').forEach(opt => {
+      opt.classList.remove('selected');
     });
 
-    menu.appendChild(item);
+    item.classList.add('selected');
+
+    wrapper.classList.remove('open');
+    applyFilters();
   });
+
+  menu.appendChild(item);
+});
 
   trigger.addEventListener('click', () => {
     document.querySelectorAll('.custom-dropdown').forEach(dropdown => {

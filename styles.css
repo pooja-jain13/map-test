@@ -791,3 +791,116 @@ body {
 .custom-dropdown-option:hover {
   background: #eee;
 }
+
+/* =========================
+   FILTER PANEL FIX
+========================= */
+.filter-panel {
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  padding-bottom: 35px !important;
+  box-sizing: border-box;
+}
+
+/* Make scrolling cleaner */
+.filter-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.filter-panel::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 999px;
+}
+
+/* =========================
+   CUSTOM DROPDOWN - POLISHED STYLE
+========================= */
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.custom-dropdown-trigger {
+  width: 100%;
+  padding: 18px 22px;
+
+  border-radius: 16px;
+  border: none;
+
+  background: rgba(11, 0, 168, 0.92);
+  color: white;
+
+  font-size: 20px;
+  font-weight: 800;
+  text-align: left;
+
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(11, 0, 168, 0.18);
+
+  transition: 0.2s ease;
+}
+
+.custom-dropdown-trigger:hover {
+  background: rgba(11, 0, 168, 1);
+  transform: scale(1.01);
+}
+
+.custom-dropdown-menu {
+  display: none;
+
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+
+  z-index: 999999;
+
+  background: rgba(35, 35, 35, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-radius: 20px;
+  padding: 10px;
+
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+  transition: 0.2s ease;
+}
+
+.custom-dropdown.open .custom-dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.custom-dropdown-option {
+  padding: 15px 18px;
+  border-radius: 14px;
+
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.custom-dropdown-option:hover {
+  background: rgba(255,255,255,0.16);
+}
+
+/* Selected option look */
+.custom-dropdown-option.selected {
+  background: rgba(255,255,255,0.22);
+}
+
+/* Hide original select */
+.filter-panel select {
+  display: none !important;
+}
