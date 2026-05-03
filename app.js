@@ -455,3 +455,64 @@ function showIntro() {
 
 document.getElementById('enterMapBtn').addEventListener('click', enterMap);
 document.getElementById('backIntroBtn').addEventListener('click', showIntro);
+
+/* =========================
+CUSTOM DROPDOWN
+========================= */
+
+function setupCustomDropdown(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'custom-dropdown';
+
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'custom-dropdown-trigger';
+  trigger.textContent = select.options[select.selectedIndex].text;
+
+  const menu = document.createElement('div');
+  menu.className = 'custom-dropdown-menu';
+
+  Array.from(select.options).forEach(option => {
+    const item = document.createElement('div');
+    item.className = 'custom-dropdown-option';
+    item.textContent = option.textContent;
+
+    item.addEventListener('click', () => {
+      select.value = option.value;
+      trigger.textContent = option.textContent;
+      wrapper.classList.remove('open');
+      applyFilters();
+    });
+
+    menu.appendChild(item);
+  });
+
+  trigger.addEventListener('click', () => {
+    document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+      if (dropdown !== wrapper) dropdown.classList.remove('open');
+    });
+
+    wrapper.classList.toggle('open');
+  });
+
+  wrapper.appendChild(trigger);
+  wrapper.appendChild(menu);
+
+  select.parentNode.insertBefore(wrapper, select.nextSibling);
+}
+
+// RUN IT
+setupCustomDropdown('cuisineFilter');
+setupCustomDropdown('viewsFilter');
+
+// CLOSE WHEN CLICKING OUTSIDE
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.custom-dropdown')) {
+    document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+      dropdown.classList.remove('open');
+    });
+  }
+});
