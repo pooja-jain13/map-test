@@ -46,8 +46,14 @@ function updateVisibleDotCount() {
 
 function getTikTokID(url) {
   if (!url) return null;
-  const match = url.match(/video\/(\d+)/);
-  return match ? match[1] : null;
+
+  const cleanUrl = String(url).trim();
+
+  const match = cleanUrl.match(/\/video\/(\d+)/);
+
+  if (match) return match[1];
+
+  return null;
 }
 
 function restaurantLayerPaint() {
@@ -242,6 +248,7 @@ function openModal(videos) {
 function renderVideo() {
   const carousel = document.getElementById('carousel');
   const video = currentVideos[currentIndex];
+  console.log("Current video URL:", video.url);
   const videoID = getTikTokID(video.url);
 
   if (!videoID) {
