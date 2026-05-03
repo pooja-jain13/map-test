@@ -733,3 +733,10 @@ body {
   pointer-events: none;
   transform: translateY(-50%) scale(0.95);
 }
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
+}

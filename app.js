@@ -48,7 +48,6 @@ function getTikTokID(url) {
   if (!url) return null;
 
   const cleanUrl = String(url).trim();
-
   const match = cleanUrl.match(/\/video\/(\d+)/);
 
   if (match) return match[1];
@@ -235,6 +234,7 @@ function openModal(videos) {
   currentIndex = 0;
 
   renderVideo();
+  updateArrowVisibility();
 
   if (hint) {
     hint.style.display = 'block';
@@ -248,7 +248,6 @@ function openModal(videos) {
 function renderVideo() {
   const carousel = document.getElementById('carousel');
   const video = currentVideos[currentIndex];
-  console.log("Current video URL:", video.url);
   const videoID = getTikTokID(video.url);
 
   if (!videoID) {
@@ -282,32 +281,28 @@ function renderVideo() {
         Watch on TikTok →
       </a>
 
-    <div class="nav-buttons">
-
-  <button 
-    onclick="prevVideo()" 
-    class="${currentIndex === 0 ? 'disabled' : ''}">
-    ←
-  </button>
-
-  <span>${currentIndex + 1} / ${currentVideos.length}</span>
-
-  <button 
-    onclick="nextVideo()" 
-    class="${currentIndex === currentVideos.length - 1 ? 'disabled' : ''}">
-    →
-  </button>
-
-</div>
-
     </div>
   `;
+}
+
+function updateArrowVisibility() {
+  const prevBtn = document.querySelector('#videoModal > .nav-buttons .prev');
+  const nextBtn = document.querySelector('#videoModal > .nav-buttons .next');
+
+  if (prevBtn) {
+    prevBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
+  }
+
+  if (nextBtn) {
+    nextBtn.style.display = currentIndex === currentVideos.length - 1 ? 'none' : 'flex';
+  }
 }
 
 function nextVideo() {
   if (currentIndex < currentVideos.length - 1) {
     currentIndex++;
     renderVideo();
+    updateArrowVisibility();
   }
 }
 
@@ -315,6 +310,7 @@ function prevVideo() {
   if (currentIndex > 0) {
     currentIndex--;
     renderVideo();
+    updateArrowVisibility();
   }
 }
 
@@ -333,6 +329,32 @@ window.onclick = function(e) {
     closeModal();
   }
 };
+
+// =========================
+// SWIPE SUPPORT
+// =========================
+let swipeStartX = 0;
+let swipeEndX = 0;
+
+const modalSwipeArea = document.getElementById('videoModal');
+
+modalSwipeArea.addEventListener('pointerdown', function(e) {
+  swipeStartX = e.clientX;
+});
+
+modalSwipeArea.addEventListener('pointerup', function(e) {
+  swipeEndX = e.clientX;
+
+  const swipeDistance = swipeEndX - swipeStartX;
+
+  if (swipeDistance > 80) {
+    prevVideo();
+  }
+
+  if (swipeDistance < -80) {
+    nextVideo();
+  }
+});
 
 // =========================
 // FILTER + COUNT
@@ -430,32 +452,6 @@ function showIntro() {
   intro.classList.remove('fade-out');
   backBtn.style.display = 'none';
 }
+
 document.getElementById('enterMapBtn').addEventListener('click', enterMap);
 document.getElementById('backIntroBtn').addEventListener('click', showIntro);
-
-/* =========================
-SWIPE SUPPORT
-========================= */
-
-let swipeStartX = 0;
-let swipeEndX = 0;
-
-const modalSwipeArea = document.getElementById('videoModal');
-
-modalSwipeArea.addEventListener('pointerdown', function(e) {
-  swipeStartX = e.clientX;
-});
-
-modalSwipeArea.addEventListener('pointerup', function(e) {
-  swipeEndX = e.clientX;
-
-  const swipeDistance = swipeEndX - swipeStartX;
-
-  if (swipeDistance > 80) {
-    prevVideo();
-  }
-
-  if (swipeDistance < -80) {
-    nextVideo();
-  }
-});
