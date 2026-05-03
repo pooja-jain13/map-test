@@ -726,3 +726,14 @@ body {
   pointer-events: none;
   transform: translateY(-50%) scale(0.95);
 }
+
+.filter-panel {
+  max-height: 82vh;
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+
+.filter-panel select {
+  appearance: auto;
+  -webkit-appearance: menulist;
+}
