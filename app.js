@@ -420,6 +420,32 @@ function showIntro() {
 }
 document.getElementById('enterMapBtn').addEventListener('click', enterMap);
 document.getElementById('backIntroBtn').addEventListener('click', showIntro);
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleSwipe() {
+  const swipeDistance = touchEndX - touchStartX;
+
+  if (swipeDistance > 60) {
+    prevVideo(); // swipe right
+  }
+
+  if (swipeDistance < -60) {
+    nextVideo(); // swipe left
+  }
+}
+
+const videoModal = document.getElementById('videoModal');
+
+videoModal.addEventListener('touchstart', function(e) {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+videoModal.addEventListener('touchend', function(e) {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
 /* =========================
 add restaurant button
 ========================= */
