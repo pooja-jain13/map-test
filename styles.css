@@ -712,3 +712,67 @@ body {
     font-size: 20px;
   }
 }
+
+/* =========================
+   VIRAL SIZE LEGEND
+========================= */
+.size-legend {
+  position: fixed;
+  right: 20px;
+  bottom: 110px;
+  z-index: 10;
+
+  width: 220px;
+  background: white;
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+}
+
+.size-legend h3 {
+  margin: 0 0 14px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.size-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.size-row p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.size-dot {
+  display: inline-block;
+  border-radius: 50%;
+  background: #0b00a8;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+}
+
+.size-dot.small {
+  width: 14px;
+  height: 14px;
+}
+
+.size-dot.medium {
+  width: 28px;
+  height: 28px;
+}
+
+.size-dot.large {
+  width: 46px;
+  height: 46px;
+}
+
+.size-note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #555;
+}
