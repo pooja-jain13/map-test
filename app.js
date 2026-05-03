@@ -55,6 +55,20 @@ function getTikTokID(url) {
   return null;
 }
 
+function formatViews(value) {
+  const views = Number(value || 0);
+
+  if (views >= 1000000) {
+    return `${(views / 1000000).toFixed(1).replace('.0', '')}M views`;
+  }
+
+  if (views >= 1000) {
+    return `${(views / 1000).toFixed(1).replace('.0', '')}K views`;
+  }
+
+  return `${views.toLocaleString()} views`;
+}
+
 function restaurantLayerPaint() {
   return {
     'circle-radius': [
@@ -178,10 +192,14 @@ map.on('load', async () => {
 map.on('click', 'restaurant-points', (e) => {
   const props = e.features[0].properties;
   const coords = e.features[0].geometry.coordinates.slice();
+
   const videos = JSON.parse(props.videos || '[]').map(v => ({
-  ...v,
-  name: props.title
-}));
+    ...v,
+    name: props.title,
+    location: props.location,
+    views: props.views
+  }));
+
   const popupNode = document.createElement('div');
 
   popupNode.innerHTML = `
@@ -263,28 +281,35 @@ function renderVideo() {
     return;
   }
 
-carousel.innerHTML = `
-  <div class="carousel-video">
+  carousel.innerHTML = `
+    <div class="carousel-video">
 
-    <div class="video-frame">
+      <div class="video-frame">
 
-      <!-- ✅ TITLE OVERLAY -->
-    <div class="video-header">
-      <div class="video-title">${video.name || "Restaurant"}</div>
-      <button class="video-close" onclick="closeModal()">×</button>
+        <div class="video-header">
+          <div class="video-info">
+            <div class="video-title">${video.name || "Restaurant"}</div>
+            <div class="video-location">${video.location || "NYC"}</div>
+          </div>
+
+          <div class="video-actions">
+            <div class="video-views">${formatViews(video.views)}</div>
+            <button class="video-close" onclick="closeModal()">×</button>
+          </div>
+        </div>
+
+        <iframe
+          src="https://www.tiktok.com/embed/${videoID}"
+          frameborder="0"
+          allow="autoplay; encrypted-media; fullscreen"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+
+      </div>
+
     </div>
-
-      <iframe
-        src="https://www.tiktok.com/embed/${videoID}"
-        frameborder="0"
-        allow="autoplay; encrypted-media; fullscreen"
-        allowfullscreen>
-      </iframe>
-
-    </div>
-
-  </div>
-`;
+  `;
 }
 
 function updateArrowVisibility() {
@@ -396,9 +421,34 @@ function applyFilters() {
   setTimeout(updateVisibleDotCount, 100);
 }
 
+function syncCustomDropdown(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+
+  const dropdown = select.nextElementSibling;
+  if (!dropdown || !dropdown.classList.contains('custom-dropdown')) return;
+
+  const trigger = dropdown.querySelector('.custom-dropdown-trigger');
+  const options = dropdown.querySelectorAll('.custom-dropdown-option');
+
+  if (trigger) {
+    trigger.textContent = select.options[select.selectedIndex].text;
+  }
+
+  options.forEach((optionEl, index) => {
+    optionEl.classList.toggle(
+      'selected',
+      select.options[index].value === select.value
+    );
+  });
+}
+
 function resetFilters() {
   document.getElementById('cuisineFilter').value = 'all';
   document.getElementById('viewsFilter').value = 'all';
+
+  syncCustomDropdown('cuisineFilter');
+  syncCustomDropdown('viewsFilter');
 
   if (map.getLayer('restaurant-points')) {
     map.setFilter('restaurant-points', null);
@@ -458,10 +508,9 @@ function showIntro() {
 document.getElementById('enterMapBtn').addEventListener('click', enterMap);
 document.getElementById('backIntroBtn').addEventListener('click', showIntro);
 
-/* =========================
-CUSTOM DROPDOWN
-========================= */
-
+// =========================
+// CUSTOM DROPDOWN
+// =========================
 function setupCustomDropdown(selectId) {
   const select = document.getElementById(selectId);
   if (!select) return;
@@ -477,32 +526,31 @@ function setupCustomDropdown(selectId) {
   const menu = document.createElement('div');
   menu.className = 'custom-dropdown-menu';
 
-Array.from(select.options).forEach(option => {
-  const item = document.createElement('div');
+  Array.from(select.options).forEach(option => {
+    const item = document.createElement('div');
 
-  item.className = option.value === select.value
-    ? 'custom-dropdown-option selected'
-    : 'custom-dropdown-option';
+    item.className = option.value === select.value
+      ? 'custom-dropdown-option selected'
+      : 'custom-dropdown-option';
 
-  item.textContent = option.textContent;
+    item.textContent = option.textContent;
 
-  item.addEventListener('click', () => {
-    select.value = option.value;
-    trigger.textContent = option.textContent;
+    item.addEventListener('click', () => {
+      select.value = option.value;
+      trigger.textContent = option.textContent;
 
-    // 👇 THIS is what you were asking about — PUT IT HERE
-    menu.querySelectorAll('.custom-dropdown-option').forEach(opt => {
-      opt.classList.remove('selected');
+      menu.querySelectorAll('.custom-dropdown-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      item.classList.add('selected');
+
+      wrapper.classList.remove('open');
+      applyFilters();
     });
 
-    item.classList.add('selected');
-
-    wrapper.classList.remove('open');
-    applyFilters();
+    menu.appendChild(item);
   });
-
-  menu.appendChild(item);
-});
 
   trigger.addEventListener('click', () => {
     document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
@@ -518,11 +566,9 @@ Array.from(select.options).forEach(option => {
   select.parentNode.insertBefore(wrapper, select.nextSibling);
 }
 
-// RUN IT
 setupCustomDropdown('cuisineFilter');
 setupCustomDropdown('viewsFilter');
 
-// CLOSE WHEN CLICKING OUTSIDE
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.custom-dropdown')) {
     document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
