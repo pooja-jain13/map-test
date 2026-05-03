@@ -178,7 +178,10 @@ map.on('load', async () => {
 map.on('click', 'restaurant-points', (e) => {
   const props = e.features[0].properties;
   const coords = e.features[0].geometry.coordinates.slice();
-  const videos = JSON.parse(props.videos || '[]');
+  const videos = JSON.parse(props.videos || '[]').map(v => ({
+  ...v,
+  name: props.title
+}));
   const popupNode = document.createElement('div');
 
   popupNode.innerHTML = `
@@ -260,29 +263,30 @@ function renderVideo() {
     return;
   }
 
-  carousel.innerHTML = `
-    <div class="carousel-video">
+carousel.innerHTML = `
+  <div class="carousel-video">
 
-      <div class="video-frame">
-        <button class="video-close" onclick="closeModal()">×</button>
+    <div class="video-frame">
 
-        <iframe
-          src="https://www.tiktok.com/embed/${videoID}"
-          width="100%"
-          height="650"
-          frameborder="0"
-          allow="autoplay; encrypted-media; fullscreen"
-          loading="lazy"
-          allowfullscreen>
-        </iframe>
+      <!-- ✅ TITLE OVERLAY -->
+      <div class="video-title">
+        ${video.name || "Restaurant"}
       </div>
 
-      <a href="${video.url}" target="_blank" class="open-tiktok">
-        Watch on TikTok →
-      </a>
+      <!-- CLOSE BUTTON -->
+      <button class="video-close" onclick="closeModal()">×</button>
+
+      <iframe
+        src="https://www.tiktok.com/embed/${videoID}"
+        frameborder="0"
+        allow="autoplay; encrypted-media; fullscreen"
+        allowfullscreen>
+      </iframe>
 
     </div>
-  `;
+
+  </div>
+`;
 }
 
 function updateArrowVisibility() {
