@@ -269,12 +269,10 @@ carousel.innerHTML = `
     <div class="video-frame">
 
       <!-- ✅ TITLE OVERLAY -->
-      <div class="video-title">
-        ${video.name || "Restaurant"}
-      </div>
-
-      <!-- CLOSE BUTTON -->
+    <div class="video-header">
+      <div class="video-title">${video.name || "Restaurant"}</div>
       <button class="video-close" onclick="closeModal()">×</button>
+    </div>
 
       <iframe
         src="https://www.tiktok.com/embed/${videoID}"
