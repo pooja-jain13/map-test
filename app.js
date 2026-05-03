@@ -284,15 +284,19 @@ function renderVideo() {
 
     <div class="nav-buttons">
 
-  ${currentIndex > 0 ? `
-    <button onclick="prevVideo()">←</button>
-  ` : ``}
+  <button 
+    onclick="prevVideo()" 
+    class="${currentIndex === 0 ? 'disabled' : ''}">
+    ←
+  </button>
 
   <span>${currentIndex + 1} / ${currentVideos.length}</span>
 
-  ${currentIndex < currentVideos.length - 1 ? `
-    <button onclick="nextVideo()">→</button>
-  ` : ``}
+  <button 
+    onclick="nextVideo()" 
+    class="${currentIndex === currentVideos.length - 1 ? 'disabled' : ''}">
+    →
+  </button>
 
 </div>
 

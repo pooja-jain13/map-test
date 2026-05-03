@@ -727,3 +727,9 @@ body {
 #videoModal {
   touch-action: pan-y;
 }
+
+.nav-buttons button.disabled {
+  opacity: 0.2;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.95);
+}
