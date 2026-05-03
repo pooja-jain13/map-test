@@ -690,27 +690,32 @@ body {
 
 .video-frame {
   position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto;
 }
 
 /* Attach X to white video box */
 .video-frame .close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 9999;
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  z-index: 999999 !important;
 
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
 
   background: rgba(0,0,0,0.7);
   color: white;
-
   border: none;
-  font-size: 26px;
 
-  display: flex;
+  font-size: 28px;
+  display: flex !important;
   align-items: center;
   justify-content: center;
 
