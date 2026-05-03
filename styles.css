@@ -693,18 +693,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  width: fit-content;
-  height: fit-content;
-  margin: 0 auto;
 }
 
-/* Attach X to white video box */
-.video-frame .close {
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  z-index: 999999 !important;
+.video-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 999999;
 
   width: 42px;
   height: 42px;
@@ -715,7 +710,7 @@ body {
   border: none;
 
   font-size: 28px;
-  display: flex !important;
+  display: flex;
   align-items: center;
   justify-content: center;
 

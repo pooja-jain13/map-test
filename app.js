@@ -257,23 +257,21 @@ function renderVideo() {
   }
 
   carousel.innerHTML = `
-   <div class="carousel-video">
-  
-  <div class="video-frame">
-    
-    <button class="close" onclick="closeModal()">×</button>
+    <div class="carousel-video">
 
-    <iframe
-      src="https://www.tiktok.com/embed/${videoID}"
-      width="100%"
-      height="650"
-      frameborder="0"
-      allow="autoplay; encrypted-media; fullscreen"
-      loading="lazy"
-      allowfullscreen>
-    </iframe>
+      <div class="video-frame">
+        <button class="video-close" onclick="closeModal()">×</button>
 
-  </div>
+        <iframe
+          src="https://www.tiktok.com/embed/${videoID}"
+          width="100%"
+          height="650"
+          frameborder="0"
+          allow="autoplay; encrypted-media; fullscreen"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+      </div>
 
       <a href="${video.url}" target="_blank" class="open-tiktok">
         Watch on TikTok →
@@ -284,6 +282,7 @@ function renderVideo() {
         <span>${currentIndex + 1} / ${currentVideos.length}</span>
         <button onclick="nextVideo()">→</button>
       </div>
+
     </div>
   `;
 }
