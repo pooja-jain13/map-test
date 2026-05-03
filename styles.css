@@ -601,3 +601,89 @@ body {
     font-size: 20px;
   }
 }
+
+/* =========================
+   VIDEO MODAL CLEANUP
+========================= */
+
+/* Hide the 1/3, 2/3, 3/3 counter */
+#videoCounter,
+.video-counter,
+.counter,
+#swipeHint {
+  display: none !important;
+}
+
+/* Hide duplicate arrows if they are being generated somewhere else */
+#carousel .nav-buttons,
+.carousel-video .nav-buttons {
+  display: none !important;
+}
+
+/* Main side arrows */
+#videoModal > .nav-buttons,
+#carouselWrapper > .nav-buttons {
+  position: absolute;
+  inset: 0;
+  z-index: 1002;
+  pointer-events: none;
+}
+
+#carouselWrapper > .nav-buttons .prev {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#carouselWrapper > .nav-buttons .next {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#carouselWrapper > .nav-buttons button {
+  pointer-events: auto;
+
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(0,0,0,0.65);
+  color: white;
+
+  font-size: 32px;
+  font-weight: 700;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Make close button visible */
+.close {
+  display: flex !important;
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  z-index: 2000;
+
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+
+  background: rgba(0,0,0,0.75);
+  color: white;
+
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
