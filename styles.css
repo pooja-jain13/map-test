@@ -907,32 +907,51 @@ body {
 
 .viral-slider-card {
   margin-top: 8px;
-  margin-bottom: 16px;
-  padding: 14px;
+  margin-bottom: 22px;
+  padding: 18px 16px;
   background: #111;
-  border-radius: 16px;
+  border-radius: 18px;
   color: white;
 }
 
-.viral-slider-top {
+.viral-slider-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
-  font-weight: 700;
+  margin-bottom: 18px;
+  font-weight: 800;
 }
 
 #viralLevelValue {
-  background: #5d3bff;
-  padding: 6px 10px;
+  background: #6b3cff;
+  padding: 7px 11px;
   border-radius: 999px;
   font-size: 13px;
+}
+
+.slider-wrap {
+  position: relative;
+  padding-top: 28px;
+}
+
+#viralBubble {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  transform: translateX(-50%);
+  background: #6b3cff;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 #viewsFilter {
   display: block !important;
   width: 100%;
-  accent-color: #5d3bff;
+  accent-color: #6b3cff;
   cursor: pointer;
 }
 

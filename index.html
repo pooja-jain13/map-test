@@ -53,20 +53,33 @@
  <label>Filter by Viral Level</label>
 
 <div class="viral-slider-card">
-  <div class="viral-slider-top">
+  <div class="viral-slider-row">
     <span id="viralLevelLabel">All Popularity</span>
     <span id="viralLevelValue">All</span>
   </div>
 
-  <input 
-    type="range" 
-    id="viewsFilter" 
-    min="0" 
-    max="4" 
-    value="0" 
-    step="1"
-    oninput="updateViralSlider(); applyFilters();"
-  >
+  <div class="slider-wrap">
+    <div id="viralBubble">All</div>
+
+    <input
+      type="range"
+      id="viewsFilter"
+      min="0"
+      max="4"
+      value="0"
+      step="1"
+      oninput="updateViralSlider(); applyFilters();"
+    >
+  </div>
+
+  <div class="viral-slider-labels">
+    <span>All</span>
+    <span>Low</span>
+    <span>Trend</span>
+    <span>Viral</span>
+    <span>1M+</span>
+  </div>
+</div>
 
  <!-- <div class="viral-slider-labels">
     <span>All</span>

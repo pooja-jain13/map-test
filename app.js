@@ -216,50 +216,66 @@ function createPopupNode(props, videos, coords) {
       <button class="more-btn">More Videos →</button>
       <button class="save-btn">Save to Phone 📱</button>
       <div class="qr-box"></div>
-      
     </div>
   `;
 
-popupNode.querySelector('.more-btn').addEventListener('click', (event) => {
-  event.preventDefault();
-  event.stopPropagation();
+  popupNode.querySelector('.more-btn').addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
 
-  lastPopupData = {
-    coords: coords,
-    props: props,
-    videos: videos
-  };
+    lastPopupData = {
+      coords: coords,
+      props: props,
+      videos: videos
+    };
 
-  openModal(videos);
-});
+    openModal(videos);
+  });
 
-// ✅ ADD THIS RIGHT HERE
-popupNode.querySelector('.save-btn').addEventListener('click', (event) => {
-  event.preventDefault();
-  event.stopPropagation();
+  popupNode.querySelector('.save-btn').addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
 
-  const qrBox = popupNode.querySelector('.qr-box');
+    const qrBox = popupNode.querySelector('.qr-box');
 
-  const saveUrl =
-    props.website && props.website !== 'null'
-      ? props.website
-      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(props.title + ' ' + props.location)}`;
-
-  qrBox.innerHTML = '';
-
-  QRCode.toCanvas(saveUrl, { width: 160 }, function(error, canvas) {
-    if (error) {
-      console.error(error);
-      qrBox.innerHTML = '<p>QR code unavailable.</p>';
+    if (qrBox.innerHTML !== '') {
+      qrBox.innerHTML = '';
       return;
     }
 
-    qrBox.appendChild(canvas);
+    const saveUrl =
+      props.website && props.website !== 'null'
+        ? props.website
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(props.title + ' ' + props.location)}`;
+
+    qrBox.innerHTML = '<p style="font-size:12px; margin-bottom:6px;">Scan to save on your phone</p>';
+
+    QRCode.toCanvas(saveUrl, { width: 160 }, function(error, canvas) {
+      if (error) {
+        console.error(error);
+        qrBox.innerHTML = '<p>QR code unavailable.</p>';
+        return;
+      }
+
+      qrBox.appendChild(canvas);
+    });
   });
-});
 
-return popupNode;
+  return popupNode;
+}
 
+function reopenPopup() {
+  if (!lastPopupData) return;
+
+  removeAllPopups();
+
+  const { coords, props, videos } = lastPopupData;
+  const popupNode = createPopupNode(props, videos, coords);
+
+  activePopup = new mapboxgl.Popup({ offset: 10 })
+    .setLngLat(coords)
+    .setDOMContent(popupNode)
+    .addTo(map);
 }
 
 // =========================
@@ -415,18 +431,19 @@ function closeModal(event) {
   map.resize();
 }
 
-// Close modal only when clicking the dark background
+// Close modal only when clicking dark background
 document.getElementById('videoModal').addEventListener('click', function(e) {
   if (e.target === this) {
     closeModal(e);
   }
 });
 
-// Stop clicks inside the carousel from closing or reopening anything
+// Stop clicks inside carousel from closing video
 document.getElementById('carouselWrapper').addEventListener('click', function(e) {
   e.stopPropagation();
 });
 
+// Stop arrow clicks from closing video
 document.querySelector('.nav-buttons').addEventListener('click', function(e) {
   e.stopPropagation();
 });
@@ -464,23 +481,7 @@ function applyFilters() {
   if (!map.getLayer('restaurant-points')) return;
 
   const cuisine = document.getElementById('cuisineFilter').value;
-if (views === '1') {
-  filters.push(['<', ['get', 'views'], 50000]);
-} else if (views === '2') {
-  filters.push([
-    'all',
-    ['>=', ['get', 'views'], 50000],
-    ['<', ['get', 'views'], 250000]
-  ]);
-} else if (views === '3') {
-  filters.push([
-    'all',
-    ['>=', ['get', 'views'], 250000],
-    ['<', ['get', 'views'], 1000000]
-  ]);
-} else if (views === '4') {
-  filters.push(['>=', ['get', 'views'], 1000000]);
-}
+  const views = document.getElementById('viewsFilter').value;
 
   let filters = ['all'];
 
@@ -488,27 +489,52 @@ if (views === '1') {
     filters.push(['==', ['get', 'category'], cuisine]);
   }
 
-  if (views === 'low') {
+  if (views === '1') {
     filters.push(['<', ['get', 'views'], 50000]);
-  } else if (views === 'trending') {
+  } else if (views === '2') {
     filters.push([
       'all',
       ['>=', ['get', 'views'], 50000],
       ['<', ['get', 'views'], 250000]
     ]);
-  } else if (views === 'viral') {
+  } else if (views === '3') {
     filters.push([
       'all',
       ['>=', ['get', 'views'], 250000],
       ['<', ['get', 'views'], 1000000]
     ]);
-  } else if (views === 'super') {
+  } else if (views === '4') {
     filters.push(['>=', ['get', 'views'], 1000000]);
   }
 
   map.setFilter('restaurant-points', filters);
-
   setTimeout(updateVisibleDotCount, 100);
+}
+
+function updateViralSlider() {
+  const slider = document.getElementById('viewsFilter');
+  const label = document.getElementById('viralLevelLabel');
+  const value = document.getElementById('viralLevelValue');
+  const bubble = document.getElementById('viralBubble');
+
+  if (!slider || !label || !value || !bubble) return;
+
+  const levels = {
+    0: ['All Popularity', 'All'],
+    1: ['Under 50k views', 'Low'],
+    2: ['50k–250k views', 'Trending'],
+    3: ['250k–1M views', 'Viral'],
+    4: ['1M+ views', '1M+']
+  };
+
+  const current = levels[slider.value];
+
+  label.textContent = current[0];
+  value.textContent = current[1];
+  bubble.textContent = current[1];
+
+  const percent = (slider.value / slider.max) * 100;
+  bubble.style.left = `calc(${percent}% - 18px)`;
 }
 
 function syncCustomDropdown(selectId) {
@@ -536,33 +562,15 @@ function syncCustomDropdown(selectId) {
 function resetFilters() {
   document.getElementById('cuisineFilter').value = 'all';
   document.getElementById('viewsFilter').value = '0';
-  updateViralSlider();
 
   syncCustomDropdown('cuisineFilter');
-  syncCustomDropdown('viewsFilter');
+  updateViralSlider();
 
   if (map.getLayer('restaurant-points')) {
     map.setFilter('restaurant-points', null);
   }
 
   setTimeout(updateVisibleDotCount, 100);
-}
-
-function updateViralSlider() {
-  const slider = document.getElementById('viewsFilter');
-  const label = document.getElementById('viralLevelLabel');
-  const value = document.getElementById('viralLevelValue');
-
-  const levels = {
-    0: ['All Popularity', 'All'],
-    1: ['Under 50k views', 'Low'],
-    2: ['50k–250k views', 'Trending'],
-    3: ['250k–1M views', 'Viral'],
-    4: ['1M+ views', '1M+']
-  };
-
-  label.textContent = levels[slider.value][0];
-  value.textContent = levels[slider.value][1];
 }
 
 // =========================
@@ -675,7 +683,7 @@ function setupCustomDropdown(selectId) {
 }
 
 setupCustomDropdown('cuisineFilter');
-setupCustomDropdown('viewsFilter');
+updateViralSlider();
 
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.custom-dropdown')) {
