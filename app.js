@@ -358,8 +358,6 @@ function closeModal(event) {
   currentVideos = [];
   currentIndex = 0;
 
-  removeAllPopups();
-
   map.resize();
 }
 
