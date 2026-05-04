@@ -214,37 +214,52 @@ function createPopupNode(props, videos, coords) {
       ` : ''}
 
       <button class="more-btn">More Videos →</button>
+      <button class="save-btn">Save to Phone 📱</button>
+      <div class="qr-box"></div>
+      
     </div>
   `;
 
-  popupNode.querySelector('.more-btn').addEventListener('click', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+popupNode.querySelector('.more-btn').addEventListener('click', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
 
-    lastPopupData = {
-      coords: coords,
-      props: props,
-      videos: videos
-    };
+  lastPopupData = {
+    coords: coords,
+    props: props,
+    videos: videos
+  };
 
-    openModal(videos);
+  openModal(videos);
+});
+
+// ✅ ADD THIS RIGHT HERE
+popupNode.querySelector('.save-btn').addEventListener('click', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const qrBox = popupNode.querySelector('.qr-box');
+
+  const saveUrl =
+    props.website && props.website !== 'null'
+      ? props.website
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(props.title + ' ' + props.location)}`;
+
+  qrBox.innerHTML = '';
+
+  QRCode.toCanvas(saveUrl, { width: 160 }, function(error, canvas) {
+    if (error) {
+      console.error(error);
+      qrBox.innerHTML = '<p>QR code unavailable.</p>';
+      return;
+    }
+
+    qrBox.appendChild(canvas);
   });
+});
 
-  return popupNode;
-}
+return popupNode;
 
-function reopenPopup() {
-  if (!lastPopupData) return;
-
-  removeAllPopups();
-
-  const { coords, props, videos } = lastPopupData;
-  const popupNode = createPopupNode(props, videos, coords);
-
-  activePopup = new mapboxgl.Popup({ offset: 10 })
-    .setLngLat(coords)
-    .setDOMContent(popupNode)
-    .addTo(map);
 }
 
 // =========================

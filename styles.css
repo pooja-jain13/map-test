@@ -886,3 +886,21 @@ body {
   width: 30px;
   height: 30px;
 }
+
+.save-btn {
+  margin-top: 8px;
+  padding: 9px 12px;
+  border: none;
+  background: #0b00a8;
+  color: white;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 700;
+}
+
+.qr-box {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
