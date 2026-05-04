@@ -13,6 +13,7 @@ let allRestaurantFeatures = [];
 let currentIndex = 0;
 let currentVideos = [];
 let isDark = false;
+let activePopup = null;
 
 // =========================
 // MAPBOX SETUP
@@ -46,13 +47,9 @@ function updateVisibleDotCount() {
 
 function getTikTokID(url) {
   if (!url) return null;
-
   const cleanUrl = String(url).trim();
   const match = cleanUrl.match(/\/video\/(\d+)/);
-
-  if (match) return match[1];
-
-  return null;
+  return match ? match[1] : null;
 }
 
 function formatViews(value) {
@@ -67,6 +64,15 @@ function formatViews(value) {
   }
 
   return `${views.toLocaleString()} views`;
+}
+
+function removeAllPopups() {
+  document.querySelectorAll('.mapboxgl-popup').forEach(popup => popup.remove());
+
+  if (activePopup) {
+    activePopup.remove();
+    activePopup = null;
+  }
 }
 
 function restaurantLayerPaint() {
@@ -190,6 +196,8 @@ map.on('load', async () => {
 // POPUP
 // =========================
 map.on('click', 'restaurant-points', (e) => {
+  removeAllPopups();
+
   const props = e.features[0].properties;
   const coords = e.features[0].geometry.coordinates.slice();
 
@@ -220,11 +228,13 @@ map.on('click', 'restaurant-points', (e) => {
     </div>
   `;
 
-  popupNode.querySelector('.more-btn').onclick = () => {
+  popupNode.querySelector('.more-btn').addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     openModal(videos);
-  };
+  });
 
-  new mapboxgl.Popup({ offset: 10 })
+  activePopup = new mapboxgl.Popup({ offset: 10 })
     .setLngLat(coords)
     .setDOMContent(popupNode)
     .addTo(map);
@@ -245,9 +255,8 @@ function openModal(videos) {
   if (!videos || videos.length === 0) return;
 
   const modal = document.getElementById('videoModal');
-  const hint = document.getElementById('swipeHint');
 
-  document.querySelectorAll('.mapboxgl-popup').forEach(p => p.remove());
+  removeAllPopups();
 
   modal.style.display = 'flex';
 
@@ -256,14 +265,6 @@ function openModal(videos) {
 
   renderVideo();
   updateArrowVisibility();
-
-  if (hint) {
-    hint.style.display = 'block';
-
-    setTimeout(() => {
-      hint.style.display = 'none';
-    }, 8000);
-  }
 }
 
 function renderVideo() {
@@ -283,7 +284,6 @@ function renderVideo() {
 
   carousel.innerHTML = `
     <div class="carousel-video">
-
       <div class="video-frame">
 
         <div class="video-header">
@@ -294,7 +294,7 @@ function renderVideo() {
 
           <div class="video-actions">
             <div class="video-views">${formatViews(video.views)}</div>
-            <button class="video-close" onclick="closeModal()">×</button>
+            <button class="video-close" onclick="closeModal(event)">×</button>
           </div>
         </div>
 
@@ -307,7 +307,6 @@ function renderVideo() {
         </iframe>
 
       </div>
-
     </div>
   `;
 }
@@ -341,21 +340,40 @@ function prevVideo() {
   }
 }
 
-function closeModal() {
+function closeModal(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   const modal = document.getElementById('videoModal');
+  const carousel = document.getElementById('carousel');
 
   modal.style.display = 'none';
 
-  const carousel = document.getElementById('carousel');
-  if (carousel) carousel.innerHTML = '';
+  if (carousel) {
+    carousel.innerHTML = '';
+  }
+
+  currentVideos = [];
+  currentIndex = 0;
+
+  removeAllPopups();
+
+  map.resize();
 }
 
-window.onclick = function(e) {
-  const modal = document.getElementById('videoModal');
-  if (e.target === modal) {
-    closeModal();
+// Close modal only when clicking the dark background
+document.getElementById('videoModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal(e);
   }
-};
+});
+
+// Stop clicks inside the carousel from closing or reopening anything
+document.getElementById('carouselWrapper').addEventListener('click', function(e) {
+  e.stopPropagation();
+});
 
 // =========================
 // SWIPE SUPPORT
