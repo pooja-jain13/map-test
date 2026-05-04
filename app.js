@@ -366,7 +366,7 @@ function renderVideo() {
           </div>
         </div>
 
-       <div class="sound-hint" id="soundHint">Tap video for sound 🔊</div>
+       <div class="sound-hint" id="soundHint">Tap video to turn sound on 🔊</div>
 
       <iframe
         src="https://www.tiktok.com/embed/${videoID}?autoplay=1&music_info=1"
@@ -379,12 +379,11 @@ function renderVideo() {
     </div>
   `;
   const soundHint = document.getElementById('soundHint');
-const videoFrame = document.querySelector('.video-frame');
 
-if (videoFrame && soundHint) {
-  videoFrame.addEventListener('click', () => {
-    soundHint.classList.add('hide');
-  });
+  if (soundHint) {
+    setTimeout(() => {
+      soundHint.classList.add('hide');
+  }, 2500);
 }
 }
 
