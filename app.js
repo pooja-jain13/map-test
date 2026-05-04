@@ -14,6 +14,7 @@ let currentIndex = 0;
 let currentVideos = [];
 let isDark = false;
 let activePopup = null;
+let lastPopupData = null;
 
 // =========================
 // MAPBOX SETUP
@@ -193,21 +194,9 @@ map.on('load', async () => {
 });
 
 // =========================
-// POPUP
+// POPUP TEMPLATE
 // =========================
-map.on('click', 'restaurant-points', (e) => {
-  removeAllPopups();
-
-  const props = e.features[0].properties;
-  const coords = e.features[0].geometry.coordinates.slice();
-
-  const videos = JSON.parse(props.videos || '[]').map(v => ({
-    ...v,
-    name: props.title,
-    location: props.location,
-    views: props.views
-  }));
-
+function createPopupNode(props, videos, coords) {
   const popupNode = document.createElement('div');
 
   popupNode.innerHTML = `
@@ -231,8 +220,56 @@ map.on('click', 'restaurant-points', (e) => {
   popupNode.querySelector('.more-btn').addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
+
+    lastPopupData = {
+      coords: coords,
+      props: props,
+      videos: videos
+    };
+
     openModal(videos);
   });
+
+  return popupNode;
+}
+
+function reopenPopup() {
+  if (!lastPopupData) return;
+
+  removeAllPopups();
+
+  const { coords, props, videos } = lastPopupData;
+  const popupNode = createPopupNode(props, videos, coords);
+
+  activePopup = new mapboxgl.Popup({ offset: 10 })
+    .setLngLat(coords)
+    .setDOMContent(popupNode)
+    .addTo(map);
+}
+
+// =========================
+// POPUP
+// =========================
+map.on('click', 'restaurant-points', (e) => {
+  removeAllPopups();
+
+  const props = e.features[0].properties;
+  const coords = e.features[0].geometry.coordinates.slice();
+
+  const videos = JSON.parse(props.videos || '[]').map(v => ({
+    ...v,
+    name: props.title,
+    location: props.location,
+    views: props.views
+  }));
+
+  lastPopupData = {
+    coords: coords,
+    props: props,
+    videos: videos
+  };
+
+  const popupNode = createPopupNode(props, videos, coords);
 
   activePopup = new mapboxgl.Popup({ offset: 10 })
     .setLngLat(coords)
@@ -357,6 +394,8 @@ function closeModal(event) {
 
   currentVideos = [];
   currentIndex = 0;
+
+  reopenPopup();
 
   map.resize();
 }
