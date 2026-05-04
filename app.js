@@ -366,17 +366,26 @@ function renderVideo() {
           </div>
         </div>
 
-        <iframe
-          src="https://www.tiktok.com/embed/${videoID}"
-          frameborder="0"
-          allow="autoplay; encrypted-media; fullscreen"
-          loading="lazy"
-          allowfullscreen>
-        </iframe>
+       <div class="sound-hint" id="soundHint">Tap video for sound 🔊</div>
 
+      <iframe
+        src="https://www.tiktok.com/embed/${videoID}?autoplay=1&music_info=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media; fullscreen"
+        loading="lazy"
+        allowfullscreen>
+      </iframe>
       </div>
     </div>
   `;
+  const soundHint = document.getElementById('soundHint');
+const videoFrame = document.querySelector('.video-frame');
+
+if (videoFrame && soundHint) {
+  videoFrame.addEventListener('click', () => {
+    soundHint.classList.add('hide');
+  });
+}
 }
 
 function updateArrowVisibility() {
