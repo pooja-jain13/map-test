@@ -412,6 +412,10 @@ document.getElementById('carouselWrapper').addEventListener('click', function(e)
   e.stopPropagation();
 });
 
+document.querySelector('.nav-buttons').addEventListener('click', function(e) {
+  e.stopPropagation();
+});
+
 // =========================
 // SWIPE SUPPORT
 // =========================
