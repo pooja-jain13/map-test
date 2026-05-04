@@ -907,58 +907,60 @@ body {
 
 .viral-slider-card {
   margin-top: 8px;
-  margin-bottom: 22px;
-  padding: 18px 16px;
-  background: #111;
-  border-radius: 18px;
-  color: white;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+
+  background: white;
+  border: 1px solid #bbb;
+  border-radius: 12px;
+
+  color: #111;
 }
 
 .viral-slider-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
-  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+#viralLevelLabel {
+  font-size: 16px;
+  font-weight: 600;
 }
 
 #viralLevelValue {
-  background: #6b3cff;
-  padding: 7px 11px;
+  background: #0b00a8;
+  color: white;
+  padding: 5px 10px;
   border-radius: 999px;
   font-size: 13px;
+  font-weight: 700;
 }
 
 .slider-wrap {
   position: relative;
-  padding-top: 28px;
+  padding-top: 6px;
 }
 
 #viralBubble {
-  position: absolute;
-  top: -4px;
-  left: 0;
-  transform: translateX(-50%);
-  background: #6b3cff;
-  color: white;
-  font-size: 12px;
-  font-weight: 800;
-  padding: 6px 9px;
-  border-radius: 999px;
-  white-space: nowrap;
+  display: none;
 }
 
 #viewsFilter {
   display: block !important;
   width: 100%;
-  accent-color: #6b3cff;
+  height: 6px;
+
+  accent-color: #0b00a8;
   cursor: pointer;
 }
 
 .viral-slider-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-  font-size: 11px;
-  color: #ddd;
+  margin-top: 8px;
+
+  font-size: 12px;
+  color: #555;
 }
