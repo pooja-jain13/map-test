@@ -50,14 +50,32 @@
   </select>
 
   <!-- VIRAL FILTER -->
-  <label>Filter by Viral Level</label>
-  <select id="viewsFilter" onchange="applyFilters()">
-    <option value="all">All Popularity</option>
-    <option value="low">Under 50k views</option>
-    <option value="trending">50k–250k views</option>
-    <option value="viral">250k–1M views</option>
-    <option value="super">1M+ views</option>
-  </select>
+ <label>Filter by Viral Level</label>
+
+<div class="viral-slider-card">
+  <div class="viral-slider-top">
+    <span id="viralLevelLabel">All Popularity</span>
+    <span id="viralLevelValue">All</span>
+  </div>
+
+  <input 
+    type="range" 
+    id="viewsFilter" 
+    min="0" 
+    max="4" 
+    value="0" 
+    step="1"
+    oninput="updateViralSlider(); applyFilters();"
+  >
+
+ <!-- <div class="viral-slider-labels">
+    <span>All</span>
+    <span>Low</span>
+    <span>Trending</span>
+    <span>Viral</span>
+    <span>1M+</span>
+  </div>-->
+</div>
 
   <!-- RESET -->
   <button onclick="resetFilters()">Reset Filters</button>

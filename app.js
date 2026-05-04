@@ -464,7 +464,23 @@ function applyFilters() {
   if (!map.getLayer('restaurant-points')) return;
 
   const cuisine = document.getElementById('cuisineFilter').value;
-  const views = document.getElementById('viewsFilter').value;
+if (views === '1') {
+  filters.push(['<', ['get', 'views'], 50000]);
+} else if (views === '2') {
+  filters.push([
+    'all',
+    ['>=', ['get', 'views'], 50000],
+    ['<', ['get', 'views'], 250000]
+  ]);
+} else if (views === '3') {
+  filters.push([
+    'all',
+    ['>=', ['get', 'views'], 250000],
+    ['<', ['get', 'views'], 1000000]
+  ]);
+} else if (views === '4') {
+  filters.push(['>=', ['get', 'views'], 1000000]);
+}
 
   let filters = ['all'];
 
@@ -519,7 +535,8 @@ function syncCustomDropdown(selectId) {
 
 function resetFilters() {
   document.getElementById('cuisineFilter').value = 'all';
-  document.getElementById('viewsFilter').value = 'all';
+  document.getElementById('viewsFilter').value = '0';
+  updateViralSlider();
 
   syncCustomDropdown('cuisineFilter');
   syncCustomDropdown('viewsFilter');
@@ -529,6 +546,23 @@ function resetFilters() {
   }
 
   setTimeout(updateVisibleDotCount, 100);
+}
+
+function updateViralSlider() {
+  const slider = document.getElementById('viewsFilter');
+  const label = document.getElementById('viralLevelLabel');
+  const value = document.getElementById('viralLevelValue');
+
+  const levels = {
+    0: ['All Popularity', 'All'],
+    1: ['Under 50k views', 'Low'],
+    2: ['50k–250k views', 'Trending'],
+    3: ['250k–1M views', 'Viral'],
+    4: ['1M+ views', '1M+']
+  };
+
+  label.textContent = levels[slider.value][0];
+  value.textContent = levels[slider.value][1];
 }
 
 // =========================
